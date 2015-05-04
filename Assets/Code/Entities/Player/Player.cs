@@ -14,7 +14,9 @@ public class Player : Entity {
 	public Sprite right;
 	public SpriteRenderer spriteParent;
 
-	public int direction;
+	public Direction direction;
+
+	public bool isActive = true;
 
 	void Start () {
 		// 將商城物品加入
@@ -23,34 +25,40 @@ public class Player : Entity {
 	void Update () {
 		// 改變玩家方向與圖片
 		if (Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.UpArrow)) {
-			direction = 0;
+			direction = Direction.Up;
 			spriteParent.sprite = backward;
 		}
 		if (Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.DownArrow)) {
-			direction = 1;
+			direction = Direction.Down;
 			spriteParent.sprite = forward;
 		}
 		if (Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.LeftArrow)) {
-			direction = 2;
+			direction = Direction.Left;
 			spriteParent.sprite = left;
 		}
 		if (Input.GetKey (KeyCode.D) || Input.GetKey (KeyCode.RightArrow)) {
-			direction = 3;
+			direction = Direction.Right;
 			spriteParent.sprite = right;
 		}
 
-		// 依方向移動
-		if (direction == 0) {
-			GetComponent<Rigidbody2D>().transform.position += Vector3.up * speed * Time.deltaTime;
+		if (isActive) {
+			// 依方向移動
+			if (direction == Direction.Up) {
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.up * speed * Time.deltaTime;
+			}
+			if (direction == Direction.Down) {
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.down * speed * Time.deltaTime;
+			}
+			if (direction == Direction.Left) {
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.left * speed * Time.deltaTime;
+			}
+			if (direction == Direction.Right) {
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.right * speed * Time.deltaTime;
+			}
 		}
-		if (direction == 1) {
-			GetComponent<Rigidbody2D>().transform.position += Vector3.down * speed * Time.deltaTime;
-		}
-		if (direction == 2) {
-			GetComponent<Rigidbody2D>().transform.position += Vector3.left * speed * Time.deltaTime;
-		}
-		if (direction == 3) {
-			GetComponent<Rigidbody2D>().transform.position += Vector3.right * speed * Time.deltaTime;
-		}
+	}
+
+	public void setActive(bool active) {
+		isActive = active;
 	}
 }

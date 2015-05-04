@@ -18,6 +18,15 @@ public class ItemManager : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	public int getItemIndex(int id)
+	{
+		for (int i = 0; i < items.Count; i++) {
+			if(items[i].itemTransform.GetComponent<Item> ().id == id)
+				return i;
+		}
+		return -1;
+	}
 }
 
 [System.Serializable]

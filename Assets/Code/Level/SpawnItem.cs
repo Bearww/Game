@@ -7,20 +7,16 @@ using System.Collections;
 
 public class SpawnItem : MonoBehaviour {
 	private GameObject playerObject;
-
 	private GameObject itemManagerObject;
 
 	private Player player;
 
-	public ItemManager itemManager;
-
 	private int currentItemId;
-
 	private Transform currentItemTransform;
 
 	private bool isActive = true;
 
-	public Transform test;
+	public ItemManager itemManager;
 
 	void Start () {
 		if (playerObject == null) {
@@ -31,9 +27,8 @@ public class SpawnItem : MonoBehaviour {
 		if (itemManagerObject == null) {
 			itemManagerObject = GameObject.FindGameObjectWithTag("Item");
 			itemManager = itemManagerObject.GetComponent<ItemManager> ();
-			currentItemTransform = itemManager.items [0].itemTransform;
-			currentItemId = currentItemTransform.GetComponent<Item> ().id;
 		}
+		setItemInfo (0);
 	}
 
 	void Update () {
@@ -42,20 +37,34 @@ public class SpawnItem : MonoBehaviour {
 				player.pItemManager.addToItemInventory (currentItemId, 1);
 				StartCoroutine(waitForRespawn());
 			}
-			if(Input.GetKey (KeyCode.F)) {
-				Destroy (GetComponent<Transform> ().GetChild(0).gameObject);
-				Transform obj = Instantiate(itemManager.items[0].itemTransform, GetComponent<Transform> ().position, Quaternion.identity) as Transform;
-				obj.parent = transform;
-			}
 		}
 	}
 
-	IEnumerator waitForRespawn()
-	{
-		isActive = false;
-		GetComponentInChildren<SpriteRenderer> ().enabled = isActive;
+	IEnumerator waitForRespawn() {
+		setItemActive (false);
 		yield return new WaitForSeconds(2);
-		isActive = true;
+		setItemActive (true);
+	}
+
+	void spawnItem(int id) {
+		if(GetComponentInChildren<Item> ().id != id) {
+			int index = itemManager.getItemIndex (id);
+			if(index < 0) index = 0;
+			Destroy (GetComponent<Transform> ().GetChild(0).gameObject);
+			Transform obj = Instantiate(itemManager.items[index].itemTransform, GetComponent<Transform> ().position, Quaternion.identity) as Transform;
+			obj.parent = transform;
+			setItemInfo(index);
+		}
+		setItemActive (true);
+	}
+
+	void setItemInfo(int index) {
+		currentItemTransform = itemManager.items [index].itemTransform;
+		currentItemId = currentItemTransform.GetComponent<Item> ().id;
+	}
+
+	void setItemActive(bool active) {
+		isActive = active;
 		GetComponentInChildren<SpriteRenderer> ().enabled = isActive;
 	}
 }

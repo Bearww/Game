@@ -42,18 +42,15 @@ public class SpawnEnemy : MonoBehaviour {
 		if (enemyManagerObject == null) {
 			enemyManagerObject = GameObject.FindGameObjectWithTag("Enemy");
 			enemyManager = enemyManagerObject.GetComponent<EnemyManager> ();
-			getEnemyInfo(1);
 		}
+		setEnemyInfo(1);
 		startPos = GetComponent<Transform> ().position;
 		lastPos = GetComponent<Transform> ().position;
 	}
 	
 	void Update () {
 		if (isActive) {
-			if (!isEscape && player.pItemManager.findInInventory(currentEnemyItemId) != -1) {
-				isEscape = true;
-			}
-			if (isEscape && Vector2.Distance (GetComponent<Rigidbody2D> ().transform.position, player.GetComponent<Rigidbody2D> ().transform.position) < 1) {
+			if (isEscape && Vector2.Distance (GetComponentInChildren<Rigidbody2D> ().transform.position, player.GetComponent<Rigidbody2D> ().transform.position) < 1) {
 				StartCoroutine(waitForRespawn());
 			}
 
@@ -110,42 +107,45 @@ public class SpawnEnemy : MonoBehaviour {
 	
 	IEnumerator waitForRespawn()
 	{
-		isActive = false;
-		GetComponentInChildren<SpriteRenderer> ().enabled = isActive;
+		setEnemyActive (false);
 		yield return new WaitForSeconds(2);
-		isActive = true;
-		GetComponentInChildren<SpriteRenderer> ().enabled = isActive;
+		setEnemyActive (true);
 	}
 
-	void getEnemyInfo(int id)
+	void spawnEnemy(int id)
 	{
-		int index = enemyManager.getEnemyIndex (id);
-		if (index > 0) {
-			currentEnemyTransform = enemyManager.enemies [index].enemyTransform;
-			currentEnemyItemId = id;
-			currentEnemy = currentEnemyTransform.GetComponent<Enemy> ();
-
-			speed = currentEnemy.speed;
-		} else {
-			currentEnemyTransform = enemyManager.enemies [0].enemyTransform;
-			currentEnemyItemId = 0;
-			currentEnemy = currentEnemyTransform.GetComponent<Enemy> ();
-			speed = currentEnemy.speed;
+		if(GetComponentInChildren<Item> ().id != id) {
+			int index = enemyManager.getEnemyIndex (id);
+			if(index < 0) index = 0;
+			Destroy (GetComponent<Transform> ().GetChild(0).gameObject);
+			Transform obj = Instantiate(enemyManager.enemies[index].enemyTransform, GetComponent<Transform> ().position, Quaternion.identity) as Transform;
+			obj.parent = transform;
+			setEnemyInfo(index);
 		}
-	}
-
-	void resetEnemy()
-	{
-		isActive = true;
 		isEscape = false;
 		isBack = false;
-
 		GetComponent<Transform> ().position = startPos;
+		setEnemyActive (true);
+	}
+
+	void setEnemyInfo(int index)
+	{
+		currentEnemyTransform = enemyManager.enemies [index].enemyTransform;
+		currentEnemyItemId = currentEnemyTransform.GetComponent<Enemy> ().enemyItem.id;
+		currentEnemy = currentEnemyTransform.GetComponent<Enemy> ();
+		speed = currentEnemy.speed;
+	}
+	
+	void setEnemyActive(bool active)
+	{
+		isActive = active;
+		GetComponentInChildren<SpriteRenderer> ().enabled = isActive;
+		GetComponentInChildren<Rigidbody2D> ().isKinematic = isActive;
 	}
 
 	void checkCyclePath()
 	{
-		Vector3 pos = new Vector3 ();
+		Vector3 pos = new Vector3 (0, 0);
 		for (int i = 0; i < enemyPath.Count; i++) {
 			if (enemyPath [i].dir == Direction.Up) {
 				pos += Vector3.up;
@@ -161,7 +161,7 @@ public class SpawnEnemy : MonoBehaviour {
 			}
 		}
 
-		if(pos.Equals (new Vector3()))
+		if(pos.Equals (new Vector3(0, 0)))
 		   isCycle = true;
 		else
 		   isCycle = false;

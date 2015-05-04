@@ -59,7 +59,7 @@ public class level : MonoBehaviour {
 				}
 				if(tileColours[x + y * levelWidth] == spawnEnemyColour) {
 					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
-					//Instantiate(spawnEnemy.enemies[1].enemyTransform, new Vector3(x, y), Quaternion.identity);
+					Instantiate(spawnEnemy.GetComponentInChildren<Transform> (), new Vector3(x, y), Quaternion.identity);
 				}
 				if(tileColours[x + y * levelWidth] == spawnItemColour) {
 					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);

@@ -50,6 +50,7 @@
      <Compile Include="Assets\Code\Entities\Enemy\EnemyManager.cs" />
      <Compile Include="Assets\Code\Entities\Entity.cs" />
      <Compile Include="Assets\Code\Entities\Player\Player.cs" />
+     <Compile Include="Assets\Code\Entities\Player\PlayerTrigger.cs" />
      <Compile Include="Assets\Code\Inventories\Player\PlayerItemManager.cs" />
      <Compile Include="Assets\Code\Items\BuffItem.cs" />
      <Compile Include="Assets\Code\Items\Item.cs" />
