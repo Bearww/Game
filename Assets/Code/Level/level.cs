@@ -22,8 +22,8 @@ public class level : MonoBehaviour {
 	public Texture2D levelTexture;
 	public Texture2D topTileTexture;
 
-	public Transform spawnEnemy;
-	public Transform spawnItem;
+	public SpawnItems spawnItems;
+	public SpawnEnemies spawnEnemies;
 
 	public Entity player;
 
@@ -58,12 +58,12 @@ public class level : MonoBehaviour {
 					player.transform.position = pos;
 				}
 				if(tileColours[x + y * levelWidth] == spawnEnemyColour) {
+					spawnEnemies.addSpawnPoint(0, new Vector3(x, y));
 					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
-					Instantiate(spawnEnemy.GetComponentInChildren<Transform> (), new Vector3(x, y), Quaternion.identity);
 				}
 				if(tileColours[x + y * levelWidth] == spawnItemColour) {
+					spawnItems.addSpawnPoint(0, new Vector3(x, y));
 					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
-					Instantiate(spawnItem.GetComponentInChildren<Transform> (), new Vector3(x, y), Quaternion.identity);
 				}
 			}
 		}

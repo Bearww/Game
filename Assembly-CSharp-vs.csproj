@@ -57,8 +57,8 @@
      <Compile Include="Assets\Code\Items\ItemManager.cs" />
      <Compile Include="Assets\Code\Items\SpecialItem.cs" />
      <Compile Include="Assets\Code\Items\StoreItem.cs" />
-     <Compile Include="Assets\Code\Level\SpawnEnemy.cs" />
-     <Compile Include="Assets\Code\Level\SpawnItem.cs" />
+     <Compile Include="Assets\Code\Level\SpawnEnemies.cs" />
+     <Compile Include="Assets\Code\Level\SpawnItems.cs" />
      <Compile Include="Assets\Code\Level\level.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
