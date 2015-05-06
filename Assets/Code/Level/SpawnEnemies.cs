@@ -12,21 +12,30 @@ public class SpawnEnemies : MonoBehaviour {
 	void Start () {
 		Debug.Log ("[SpawnEnemy]SpawnPoints " + spawnPoints.Count);
 		DontDestroyOnLoad (gameObject);
+		for (int index = 0; index < spawnPath.Count; index++)
+			checkCyclePath (index);
 	}
 
 	public void addSpawnPoint(int enemyId, Vector3 enemyPosition) {
 		//Debug.Log ("[Spawnenemy]Add enemy " + enemyId.ToString());
+		int spawnIndex = spawnPoints.Count;
 		int enemyIndex = enemyManager.getEnemyIndex (enemyId);
 		if (enemyIndex < 0)
 			enemyIndex = 0;
 		
 		Transform enemy = Instantiate (enemyManager.enemies [enemyIndex].enemyTransform, enemyPosition, Quaternion.identity) as Transform;
 		enemy.SetParent(transform);
+
+		if (spawnIndex < spawnPath.Count) {
+			enemy.GetComponent<Enemy> ().enemyPath = spawnPath [spawnIndex].enemyPath;
+			enemy.GetComponent<Enemy> ().isCycle = spawnPath [spawnIndex].isCyclePath;
+		}
+
 		SpawnPoint spawnPoint = new SpawnPoint (enemy, enemyPosition);
 		spawnPoints.Add (spawnPoint);
 	}
 	
-	public int findSpawnenemy(Transform spawnenemy) {
+	public int findSpawnEnemy(Transform spawnenemy) {
 		for (int index = 0; index < spawnPoints.Count; index++) {
 			if(spawnPoints[index].spawnTransform == spawnenemy)
 				return index;
@@ -43,8 +52,10 @@ public class SpawnEnemies : MonoBehaviour {
 		yield return new WaitForSeconds(2);
 		Transform enemy = Instantiate (enemyManager.enemies [0].enemyTransform, spawnPoints[index].spawnPosition, Quaternion.identity) as Transform;
 		enemy.SetParent(transform);
-		enemy.GetComponent<Enemy> ().enemyPath = spawnPath [index].enemyPath;
-		enemy.GetComponent<Enemy> ().isCycle = spawnPath [index].isCyclePath;
+		if (index < spawnPath.Count) {
+			enemy.GetComponent<Enemy> ().enemyPath = spawnPath [index].enemyPath;
+			enemy.GetComponent<Enemy> ().isCycle = spawnPath [index].isCyclePath;
+		}
 		spawnPoints [index].spawnTransform = enemy;
 	}
 

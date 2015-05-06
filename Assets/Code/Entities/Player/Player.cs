@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 /*
  * 玩家設定
  */
 public class Player : Entity {
+
+	private int count;
+
+	public Text scoreText;
 
 	public PlayerItemManager pItemManager;
 
@@ -19,6 +24,8 @@ public class Player : Entity {
 	public bool isActive = true;
 
 	void Start () {
+		// 設定分數
+		count = 0;
 		// 將商城物品加入
 	}
 
@@ -60,5 +67,18 @@ public class Player : Entity {
 
 	public void setActive(bool active) {
 		isActive = active;
+	}
+
+	public void scorePoints(int points) {
+		count += points;
+		scoreText.text = "Score: " + count.ToString ();
+	}
+	
+	public void lossPoints(int points) {
+		if (count >= points)
+			count -= points;
+		else
+			count = 0;
+		scoreText.text = "Score: " + count.ToString ();
 	}
 }

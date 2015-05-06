@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 /*
  * 地圖設置
  */
-public class level : MonoBehaviour {
+public class Level : MonoBehaviour {
+
+	private int level;
+	private int time;
 
 	private int levelWidth;
 	private int levelHeight;
@@ -14,6 +18,8 @@ public class level : MonoBehaviour {
 
 	private Color[] tileColours;
 	private Color[] topTileColours;
+	
+	public Text timeText;
 
 	public Color spawnPointColour;
 	public Color spawnEnemyColour;
@@ -28,14 +34,16 @@ public class level : MonoBehaviour {
 	public Entity player;
 
 	void Start () {
+		level = 0;
+		time = 180;
 		levelWidth = levelTexture.width;
 		levelHeight = levelTexture.height;
 		loadLevel ();
 		//loadTopTiles ();
+		InvokeRepeating("countDown", 1f, 1f);
 	}
 
 	void Update () {
-	
 	}
 
 	/*
@@ -85,6 +93,13 @@ public class level : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	void countDown() {
+		int min = time / 60;
+		int sec = time % 60;
+		timeText.text = string.Format ("{0}:{1:00}", min, sec);
+		time--;
 	}
 }
 

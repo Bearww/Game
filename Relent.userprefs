@@ -1,14 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Entities\Enemy\Enemy.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Code\Entities\Player\PlayerTrigger.cs">
     <Files>
-      <File FileName="Assets\Code\Entities\Enemy\Enemy.cs" Line="80" Column="1" />
-      <File FileName="Assets\Code\Entities\Enemy\EnemyManager.cs" Line="34" Column="2" />
-      <File FileName="Assets\Code\Level\SpawnEnemies.cs" Line="47" Column="72" />
-      <File FileName="Assets\Code\Level\SpawnItems.cs" Line="13" Column="34" />
-      <File FileName="Assets\Code\Entities\Player\PlayerTrigger.cs" Line="10" Column="5" />
-      <File FileName="Assets\Code\Entities\Player\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Code\Level\level.cs" Line="61" Column="18" />
+      <File FileName="Assets\Code\Entities\Enemy\Enemy.cs" Line="78" Column="4" />
+      <File FileName="Assets\Code\Entities\Enemy\EnemyManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Code\Level\SpawnEnemies.cs" Line="38" Column="23" />
+      <File FileName="Assets\Code\Level\SpawnItems.cs" Line="46" Column="3" />
+      <File FileName="Assets\Code\Entities\Player\PlayerTrigger.cs" Line="26" Column="6" />
+      <File FileName="Assets\Code\Entities\Player\Player.cs" Line="82" Column="17" />
+      <File FileName="Assets\Code\Level\Level.cs" Line="101" Column="44" />
+      <File FileName="Assets\Code\Inventories\Player\PlayerItemManager.cs" Line="25" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -27,52 +27,53 @@ public class Enemy : Entity {
 	}
 
 	void Update () {
-		if (!isBack) {
-			if (enemyPath [currentStep].dir == Direction.Up) {
-				GetComponent<Transform> ().position += Vector3.up * speed * Time.deltaTime;
-			}
-			if (enemyPath [currentStep].dir == Direction.Down) {
-				GetComponent<Transform> ().position += Vector3.down * speed * Time.deltaTime;
-			}
-			if (enemyPath [currentStep].dir == Direction.Left) {
-				GetComponent<Transform> ().position += Vector3.left * speed * Time.deltaTime;
-			}
-			if (enemyPath [currentStep].dir == Direction.Right) {
-				GetComponent<Transform> ().position += Vector3.right * speed * Time.deltaTime;
-			}
-		} else {
-			if (enemyPath [currentStep].dir == Direction.Up) {
-				GetComponent<Transform> ().position += Vector3.down * speed * Time.deltaTime;
-			}
-			if (enemyPath [currentStep].dir == Direction.Down) {
-				GetComponent<Transform> ().position += Vector3.up * speed * Time.deltaTime;
-			}
-			if (enemyPath [currentStep].dir == Direction.Left) {
-				GetComponent<Transform> ().position += Vector3.right * speed * Time.deltaTime;
-			}
-			if (enemyPath [currentStep].dir == Direction.Right) {
-				GetComponent<Transform> ().position += Vector3.left * speed * Time.deltaTime;
-			}
-		}
-		
-		if (enemyPath [currentStep].steps <= Vector2.Distance (GetComponent<Transform> ().position, lastPos)) {
-			lastPos = GetComponent<Transform> ().position;
-			if(isBack)
-				currentStep--;
-			else
-				currentStep++;
-			
-			if(currentStep == enemyPath.Count) {
-				if(isCycle)
-					currentStep = 0;
-				else {
-					isBack = true;
-					currentStep--;
+		if (enemyPath.Count > 0) {
+			if (!isBack) {
+				if (enemyPath [currentStep].dir == Direction.Up) {
+					GetComponent<Transform> ().position += Vector3.up * speed * Time.deltaTime;
+				}
+				if (enemyPath [currentStep].dir == Direction.Down) {
+					GetComponent<Transform> ().position += Vector3.down * speed * Time.deltaTime;
+				}
+				if (enemyPath [currentStep].dir == Direction.Left) {
+					GetComponent<Transform> ().position += Vector3.left * speed * Time.deltaTime;
+				}
+				if (enemyPath [currentStep].dir == Direction.Right) {
+					GetComponent<Transform> ().position += Vector3.right * speed * Time.deltaTime;
+				}
+			} else {
+				if (enemyPath [currentStep].dir == Direction.Up) {
+					GetComponent<Transform> ().position += Vector3.down * speed * Time.deltaTime;
+				}
+				if (enemyPath [currentStep].dir == Direction.Down) {
+					GetComponent<Transform> ().position += Vector3.up * speed * Time.deltaTime;
+				}
+				if (enemyPath [currentStep].dir == Direction.Left) {
+					GetComponent<Transform> ().position += Vector3.right * speed * Time.deltaTime;
+				}
+				if (enemyPath [currentStep].dir == Direction.Right) {
+					GetComponent<Transform> ().position += Vector3.left * speed * Time.deltaTime;
 				}
 			}
-			else if(currentStep < 0) {
-				isBack = false;
-				currentStep++;
+		
+			if (enemyPath [currentStep].steps <= Vector2.Distance (GetComponent<Transform> ().position, lastPos)) {
+				lastPos = GetComponent<Transform> ().position;
+				if (isBack)
+					currentStep--;
+				else
+					currentStep++;
+			
+				if (currentStep == enemyPath.Count) {
+					if (isCycle)
+						currentStep = 0;
+					else {
+						isBack = true;
+						currentStep--;
+					}
+				} else if (currentStep < 0) {
+					isBack = false;
+					currentStep++;
+				}
 			}
 		}
 	}

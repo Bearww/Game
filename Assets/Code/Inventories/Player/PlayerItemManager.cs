@@ -21,7 +21,10 @@ public class PlayerItemManager : MonoBehaviour {
 
 	public void addToItemInventory(int itemId, int amount) {
 		int locItem = findInItems (itemId);
-		if (locItem >= 0) {
+		if (locItem < 0) {
+			Debug.Log ("[PlayerItemManager]Invalid item loc");
+		}
+		else {
 			int locInv = findInInventory(itemId);
 			if(locInv >= 0)
 				items[locInv].amount += amount;
