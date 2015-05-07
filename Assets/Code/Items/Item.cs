@@ -10,6 +10,7 @@ public class Item : MonoBehaviour {
 	public int id;
 	public string itemName;
 	public ItemType itemType;
+	public Sprite itemSprite;
 
 	void Start () {
 	

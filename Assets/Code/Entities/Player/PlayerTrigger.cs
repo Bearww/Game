@@ -16,7 +16,7 @@ public class PlayerTrigger : MonoBehaviour {
 				Debug.Log ("[ItemTrigger]Invalid item index");
 			}
 			else {
-				player.pItemManager.addToItemInventory (item.GetComponent<Item> ().id, 1);
+				player.pItemManager.addToItemInventory (item.GetComponent<Item> ().id);
 				item.GetComponentInParent<SpawnItems> ().respawnItem (index);
 				player.scorePoints (5);
 			}
