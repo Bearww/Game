@@ -7,10 +7,6 @@ using System.Collections;
  */
 public class Player : Entity {
 
-	private int count;
-
-	public Text scoreText;
-
 	public PlayerItemManager pItemManager;
 
 	public Sprite forward;
@@ -24,9 +20,8 @@ public class Player : Entity {
 	public bool isActive = true;
 
 	void Start () {
-		// 設定分數
-		count = 0;
 		// 將商城物品加入
+		pItemManager.addToItemInventory (4, 2);
 	}
 
 	void Update () {
@@ -69,16 +64,31 @@ public class Player : Entity {
 		isActive = active;
 	}
 
-	public void scorePoints(int points) {
-		count += points;
-		scoreText.text = "Score: " + count.ToString ();
+	/*
+	public void tryMoving() {
+		Vector2 testDir = new Vector2 ();
+		if (direction == Direction.Up) {
+			testDir = Vector2.up;
+		}
+		if (direction == Direction.Down) {
+			testDir = Vector2.up * -1;
+		}
+		if (direction == Direction.Left) {
+			testDir = Vector2.right * -1;
+		}
+		if (direction == Direction.Right) {
+			testDir = Vector2.right;
+		}
+
+		Vector2 current = new Vector2 (transform.position.x, transform.position.y);
+		Collider2D [] col = Physics2D.OverlapCircleAll (current + testDir * 0.01f, 0.5f);
+
+		if (col.Length > 1) {
+			Debug.Log ("[Player]Collider amount " + col.Length);
+		}
+		else {
+			setActive (true);
+		}
 	}
-	
-	public void lossPoints(int points) {
-		if (count >= points)
-			count -= points;
-		else
-			count = 0;
-		scoreText.text = "Score: " + count.ToString ();
-	}
+	*/
 }

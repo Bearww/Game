@@ -31,4 +31,5 @@ public class EnemyManager : MonoBehaviour {
 [System.Serializable]
 public class Enemies {
 	public Transform enemyTransform;
+	public int enemyAmount;
 }

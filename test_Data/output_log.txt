@@ -1,0 +1,42 @@
+Initialize engine version: 5.0.0f4 (5b98b70ebeb9)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 10.1]
+    Renderer: Intel(R) HD Graphics 3000 (ID=0x116)
+    Vendor:   Intel
+    VRAM:     128 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\unity\project\Relent\test_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\unity\project\Relent\test_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\unity\project\Relent\test_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\unity\project\Relent\test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\unity\project\Relent\test_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\unity\project\Relent\test_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+- Completed reload, in  0.054 seconds
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: D:\unity\project\Relent\test_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\unity\project\Relent\test_Data\Managed\System.dll (this message is harmless)
+[ItemManager]items: 6
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+[SpawnItem]SpawnPoints 8
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+[PlayerItemManager]Add itemId:4 amount:2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+[SpawnEnemy]SpawnPoints 8
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+[EnemyManager]enemies: 2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+

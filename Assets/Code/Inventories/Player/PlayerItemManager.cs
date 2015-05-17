@@ -29,6 +29,7 @@ public class PlayerItemManager : MonoBehaviour {
 			Debug.Log ("[PlayerItemManager]Invalid item loc");
 		}
 		else {
+			Debug.Log (string.Format("[PlayerItemManager]Add itemId:{0}", itemId));
 			Inventory inv = new Inventory(itemManager.items[itemIndex].itemTransform.GetComponent<Item> (), 1);
 			items.Add(inv);
 			updateItemUI(itemIndex, items.Count - 1);
@@ -41,12 +42,14 @@ public class PlayerItemManager : MonoBehaviour {
 			Debug.Log ("[PlayerItemManager | Add]Invalid item loc");
 		}
 		else {
+			Debug.Log (string.Format("[PlayerItemManager]Add itemId:{0} amount:{1}", itemId, amount));
 			int invIndex = findInInventory(itemId);
 			if(invIndex >= 0)
 				items[invIndex].amount += amount;
 			else {
 				Inventory inv = new Inventory(itemManager.items[itemIndex].itemTransform.GetComponent<Item> (), amount);
 				items.Add(inv);
+				invIndex = 0;
 			}
 			updateItemUI(itemIndex, invIndex);
 		}
@@ -61,31 +64,39 @@ public class PlayerItemManager : MonoBehaviour {
 			int invIndex = findInInventory(itemId);
 			if(invIndex < 0)
 				Debug.Log ("[PlayerItemManager | Remove]Invalid item inv");
-			else
+			else {
+				Debug.Log (string.Format("[PlayerItemManager]Remove item id:{0}", itemId));
+				updateItemUI(invIndex);
 				items.RemoveAt(invIndex);
+			}
 		}
 	}
 
 	public void removeFromItemInventory(int itemId, int amount) {
 		int itemIndex = findInItems (itemId);
 		if (itemIndex < 0) {
-			Debug.Log ("[PlayerItemManager | Add]Invalid item loc");
+			Debug.Log ("[PlayerItemManager | Remove]Invalid item loc");
 		}
 		else {
 			int invIndex = findInInventory(itemId);
 			if(invIndex < 0)
 				Debug.Log ("[PlayerItemManager | Remove]Invalid item inv");
-			else
+			else {
+				Debug.Log (string.Format("[PlayerItemManager]Remove itemId:{0} amount:{1}", itemId, amount));
 				items[invIndex].amount -= amount;
+			}
 		}
 	}
 
 	public void removeFromItemInventory(ItemType itemType) {
 		int invIndex = findInInventory(itemType);
-		if(invIndex < 0)
+		if (invIndex < 0)
 			Debug.Log ("[PlayerItemManager | Remove]Invalid item type");
-		else
-			items.RemoveAt(invIndex);
+		else {
+			Debug.Log (string.Format("[PlayerItemManager]Remove item type:{0}", itemType));
+			updateItemUI(invIndex);
+			items.RemoveAt (invIndex);
+		}
 	}
 
 	private int findInItems(int itemId) {
@@ -115,6 +126,25 @@ public class PlayerItemManager : MonoBehaviour {
 		return -1;
 	}
 
+	private void updateItemUI(int invIndex) {
+		Item item = items [invIndex].item;
+		int amountOfItem, index;
+
+		if (item.itemType == ItemType.Role) {
+			amountOfItem = roleItem.Length;
+			for(index = 0; index < amountOfItem; index++) {
+				if(roleItem[index].GetComponent<Image> ().sprite == item.itemSprite) {
+					break;
+				}
+			}
+
+			for(; index < amountOfItem - 1; index++) {
+				roleItem[index].GetComponent<Image> ().sprite = roleItem[index + 1].GetComponent<Image> ().sprite;
+			}
+			roleItem[amountOfItem - 1].sprite = null;
+		}
+	}
+
 	private void updateItemUI(int itemIndex, int invIndex) {
 		Item item = items [invIndex].item;
 		int amountOfItem;
@@ -129,10 +159,19 @@ public class PlayerItemManager : MonoBehaviour {
 				}
 			}
 			removeFromItemInventory(ItemType.Role);
-			for(int index = 0; index < amountOfItem - 1; index++) {
-				roleItem[index].GetComponent<Image> ().sprite = roleItem[index + 1].GetComponent<Image> ().sprite;
-			}
 			roleItem[amountOfItem - 1].sprite = itemSprite;
+		}
+
+		if (item.itemType == ItemType.Store) {
+			amountOfItem = storeItem.Length;
+			for(int index = 0; index < amountOfItem; index++) {
+				if(storeItem[index].GetComponent<Image> ().sprite == null ||
+				   storeItem[index].GetComponent<Image> ().sprite == itemSprite) {
+					storeItem[index].sprite = itemSprite;
+					storeItem[index].GetComponentInChildren<Text> ().text = items[invIndex].amount.ToString ();
+					return;
+				}
+			}
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerTrigger : MonoBehaviour {
 
+	public GameManager gameManager;
 	public Player player;
 	private Direction collisionDirection;
 
@@ -18,45 +19,53 @@ public class PlayerTrigger : MonoBehaviour {
 			else {
 				player.pItemManager.addToItemInventory (item.GetComponent<Item> ().id);
 				item.GetComponentInParent<SpawnItems> ().respawnItem (index);
-				player.scorePoints (5);
+				gameManager.extraScore (5);
 			}
-		} else if (other.gameObject.CompareTag ("Enemy")) {
-			Transform enemy = other.GetComponent<Transform> ();
-			int index = enemy.GetComponentInParent<SpawnEnemies> ().findSpawnEnemy (enemy);
+		}
+		else if (other.gameObject.CompareTag ("Enemy")) {
+			Transform enemyTransform = other.GetComponent<Transform> ();
+			int index = enemyTransform.GetComponentInParent<SpawnEnemies> ().findSpawnIndex (enemyTransform);
 			//Debug.Log ("[EnemyTrigger]Destroy enemy " + index.ToString());
 			if (index < 0) {
 				Debug.Log ("[EnemyTrigger]Invalid enemy index");
 			}
 			else {
-				Item enemyItem = enemy.GetComponent<Enemy> ().enemyItem;
-				if(player.pItemManager.findInInventory(enemyItem.id) < 0) {
-					collisionDirection = getCollisionDirection (other.GetComponent<Transform> ());
+				Debug.Log ("[EnemyTrigger]Player hit");
+				Enemy enemy = enemyTransform.GetComponent<Enemy> ();
+				if(player.pItemManager.findInInventory(enemy.enemyItem.id) < 0) {
+					collisionDirection = getCollisionDirection (enemyTransform);
 					player.setActive (false);
+					//enemy.setActive(player.direction);
 				}
 				else {
+					int score = enemy.GetComponentInParent<SpawnEnemies> ().getEnemyScore(enemy);
+					gameManager.extraScore (score);
 					enemy.GetComponentInParent<SpawnEnemies> ().respawnEnemy (index);
-					player.scorePoints (10);
+					player.pItemManager.removeFromItemInventory(enemy.enemyItem.id);
 				}
 			}
 		}
 		else {
 			collisionDirection = getCollisionDirection (other.GetComponent<Transform> ());
 			player.setActive (false);
+			//Debug.Log ("[TileTrigger]Tile direction" + collisionDirection.ToString());
+		}
+	}
+
+	void OnTriggerStay2D(Collider2D other) {
+		collisionDirection = getCollisionDirection (other.GetComponent<Transform> ());
+		if (player.direction == collisionDirection) {
+			player.setActive(false);
+		} else {
+			player.setActive(true);
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
 		//Debug.Log ("[PlayerTrigger]Trigger Exit");
-		player.setActive (true);
-	}
-
-	void OnTriggerStay2D(Collider2D other) {
-		if (other.gameObject.CompareTag ("Item") == false) {
-			if (collisionDirection == player.direction) {
-				player.setActive (false);
-			} else {
-				player.setActive (true);
-			}
+		if(other.gameObject.CompareTag("Enemy")) {
+			//Debug.Log ("[EnemyTrigger]Player exit");
+			player.setActive(true);
 		}
 	}
 

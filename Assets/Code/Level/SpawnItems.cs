@@ -51,6 +51,10 @@ public class SpawnPoint {
 	public Transform spawnTransform;
 	public Vector3 spawnPosition;
 
+	public SpawnPoint(Vector3 itemPosition) {
+		this.spawnPosition = itemPosition;
+	}
+
 	public SpawnPoint(Transform itemTransform, Vector3 itemPosition) {
 		this.spawnTransform = itemTransform;
 		this.spawnPosition = itemPosition;
