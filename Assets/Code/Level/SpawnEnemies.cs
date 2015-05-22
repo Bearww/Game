@@ -9,18 +9,14 @@ public class SpawnEnemies : MonoBehaviour {
 	private List<int> spawnAmount = new List<int> ();
 	private List<float> spawnRatio = new List<float> ();
 
-	public EnemyManager enemyManager;
-
 	public List<SpawnPoint> spawnPoints;
 	public List<EnemyPath> spawnPath;
+	public SpawnItems spawnItems;
 
 	void Start () {
 		Debug.Log ("[SpawnEnemy]SpawnEnemy " + spawnEnemy.Count);
-		Debug.Log ("[SpawnEnemy]SpawnPoints " + spawnPoints.Count);
-		Debug.Log ("[SpawnEnemy]SpawnPath " + spawnPath.Count);
-
 		startSpawnEnemies ();
-		DontDestroyOnLoad (gameObject);
+		spawnItems.startSpawnItems ();
 	}
 
 	public void addSpawnPoint(Vector3 enemyPosition) {
@@ -28,21 +24,6 @@ public class SpawnEnemies : MonoBehaviour {
 		SpawnPoint spawnPoint = new SpawnPoint (enemyPosition);
 		spawnPoints.Add (spawnPoint);
 	}
-
-	/*
-	public void addSpawnPoint(int enemyId, Vector3 enemyPosition) {
-		//Debug.Log ("[Spawnenemy]Add enemy " + enemyId.ToString());
-		int enemyIndex = enemyManager.getEnemyIndex (enemyId);
-		if (enemyIndex < 0)
-			enemyIndex = 0;
-		
-		Transform enemy = Instantiate (enemyManager.enemies [enemyIndex].enemyTransform, enemyPosition, Quaternion.identity) as Transform;
-		enemy.SetParent(transform);
-
-		SpawnPoint spawnPoint = new SpawnPoint (enemy, enemyPosition);
-		spawnPoints.Add (spawnPoint);
-	}
-	*/
 
 	public void addSpawnPath(EnemyPath sp) {
 		//Debug.Log ("[SpawnEnemy]SpawnPath Add" + spawnPath.Count);
@@ -53,11 +34,13 @@ public class SpawnEnemies : MonoBehaviour {
 		spawnAmount.Add (0);
 		spawnEnemy.Add (enemy);
 		spawnRatio.Add (enemy.enemyRatio);
+		spawnItems.addItem (enemy.enemy.GetComponent<Enemy> ().enemyItem);
 		setEnemyRatio ();
 	}
 
 	public void removeEnemy(int index) {
 		Debug.Log ("[SpawnEnemy]Revmoe enemy");
+		spawnItems.removeItem (getSpawnEnemyItem (spawnSpecial.Count + index));
 		spawnAmount.RemoveAt (spawnSpecial.Count + index);
 		spawnEnemy.RemoveAt (index);
 		spawnRatio.RemoveAt (index);
@@ -83,12 +66,12 @@ public class SpawnEnemies : MonoBehaviour {
 
 	public int findSpawnEnemy(Enemy enemy) {
 		for (int index = 0; index < spawnSpecial.Count; index++) {
-			if(spawnSpecial[index].getStage() == enemy.getStage())
+			if(spawnSpecial[index].enemy.GetComponent<Enemy> ().id == enemy.id)
 				return index;
 		}
 
 		for (int index = 0; index < spawnEnemy.Count; index++) {
-			if(spawnEnemy[index].getStage() == enemy.getStage())
+			if(spawnEnemy[index].enemy.GetComponent<Enemy> ().id == enemy.id)
 				return spawnSpecial.Count + index;
 		}
 		return -1;
@@ -114,9 +97,24 @@ public class SpawnEnemies : MonoBehaviour {
 		}
 		return 0;
 	}
-	
+
+	public List<int> getSpawnAmount() {
+		return spawnAmount;
+	}
+
+	public Item getSpawnEnemyItem(int index) {
+		if (index < spawnSpecial.Count) {
+			return spawnSpecial[index].enemy.GetComponent<Enemy> ().enemyItem;
+		}
+		return spawnEnemy [index - spawnSpecial.Count].enemy.GetComponent<Enemy> ().enemyItem;
+	}
+
+	public int getSpawnSize() {
+		return spawnAmount.Count;
+	}
+
 	public void respawnEnemy(int index) {
-		changeEnemyRatio (index);
+		changeEnemyAmount (index);
 		Destroy (spawnPoints [index].spawnTransform.gameObject);
 		StartCoroutine(waitForRespawn(index));
 	}
@@ -150,7 +148,6 @@ public class SpawnEnemies : MonoBehaviour {
 			Debug.Log ("SpawnEnemy]Reset spawn ratio");
 			setEnemyRatio();
 			i = spawnSpecial.Count;
-			spawnAmount [i] += 1;
 		}
 		spawnAmount [i] += 1;
 
@@ -160,7 +157,7 @@ public class SpawnEnemies : MonoBehaviour {
 		return spawnEnemy [i];
 	}
 
-	void changeEnemyRatio(int index) {
+	void changeEnemyAmount(int index) {
 		int i = findSpawnEnemy (spawnPoints [index].spawnTransform.GetComponent<Enemy> ());
 
 		if (i < 0) {
@@ -212,31 +209,6 @@ public class SpawnEnemies : MonoBehaviour {
 		enemy.GetComponent<Enemy> ().enemyPath = spawnPath[index].enemyPath;
 		spawnPoints[index].spawnTransform = enemy;
 	}
-
-	/*
-	bool checkCyclePath(List<Path> enemyPath)
-	{
-		Vector3 pos = new Vector3 (0, 0);
-		for (int i = 0; i < enemyPath.Count; i++) {
-			if (enemyPath [i].dir == Direction.Up) {
-				pos += Vector3.up;
-			}
-			if (enemyPath [i].dir == Direction.Down) {
-				pos += Vector3.down;
-			}
-			if (enemyPath [i].dir == Direction.Left) {
-				pos += Vector3.left;
-			}
-			if (enemyPath [i].dir == Direction.Right) {
-				pos += Vector3.right;
-			}
-		}
-		
-		if (pos.Equals (new Vector3 (0, 0)))
-			return true;
-		return false;
-	}
-	*/
 }
 
 [System.Serializable]

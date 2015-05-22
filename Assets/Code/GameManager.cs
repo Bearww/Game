@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+	private int gameMode;
+
 	private int gameStage;
 
 	private int gameTime;
@@ -15,6 +17,12 @@ public class GameManager : MonoBehaviour {
 
 	private int basicScore;
 
+	private int goddessIndex;
+
+	private Enemy goddessInfo;
+
+	public EnemyManager enemies;
+
 	public int minuteTimeLimits;
 
 	public Text timeText;
@@ -23,26 +31,31 @@ public class GameManager : MonoBehaviour {
 
 	public List<Stage> stages;
 
+	public Player player;
+	public Goddess goddess;
 	public SpawnEnemies spawner;
 
 	void Awake () {
 		Debug.Log ("[GameManager]Game Stages " + stages.Count);
+		gameMode = 0;
 		gameStage = 0;
 		gameScore = stageScore = basicScore = 0;
 		gameTime = minuteTimeLimits * 60;
 		addEnemy ();
-		InvokeRepeating("countDown", 1f, 1f);
+		InvokeRepeating("countDown", 0.1f, 1f);
 	}
 
 	void Update () {
-	
+
 	}
 
 	void countDown() {
-		int min = gameTime / 60;
-		int sec = gameTime % 60;
-		timeText.text = string.Format ("{0}:{1:00}", min, sec);
-		gameTime--;
+		if (gameMode == 0) {
+			int min = gameTime / 60;
+			int sec = gameTime % 60;
+			timeText.text = string.Format ("{0}:{1:00}", min, sec);
+			gameTime--;
+		}
 	}
 
 	void addEnemy() {
@@ -111,6 +124,30 @@ public class GameManager : MonoBehaviour {
 		else {
 			scoreText.text = string.Format ("Stage:{0}\nScore:{1}", gameStage, gameScore);
 		}
+	}
+
+	public void flirtWithGoddess(Enemy e, int index) {
+		Debug.Log ("[GameManager]Flirt with goddess");
+		gameMode = 1;
+		goddessIndex = index;
+		goddessInfo = e;
+		player.gameObject.SetActive (false);
+		spawner.gameObject.SetActive (false);
+		goddess.gameObject.SetActive (true);
+		goddess.startFlirt (enemies.getEnemySprite(e.id));
+	}
+
+	public void goddessFavorability(int favorability) {
+		if (favorability < 5) {
+			Debug.Log ("[GameManager]Not captured heart");
+		}
+		else {
+			int score = goddessInfo.GetComponentInParent<SpawnEnemies> ().getEnemyScore (goddessInfo);
+			enemies.unlockEnemy(goddessInfo.id);
+			extraScore (score);
+			goddessInfo.GetComponentInParent<SpawnEnemies> ().respawnEnemy (goddessIndex);
+		}
+		gameMode = 0;
 	}
 }
 

@@ -7,40 +7,52 @@ using System.Collections;
  */
 public class Player : Entity {
 
+	private bool isOneClick = false;
+	private float timeForOneClick;
+
+	private Vector3 cameraDist;
+	private float posX;
+	private float posY;
+
 	public PlayerItemManager pItemManager;
 
 	public Sprite forward;
 	public Sprite backward;
 	public Sprite left;
 	public Sprite right;
-	public SpriteRenderer spriteParent;
+	public SpriteRenderer playerSprite;
+	public Transform spriteTransform;	
 
 	public Direction direction;
+
+	public float delay;
+	public float doubleClickTime;
+	public float dragLength;
 
 	public bool isActive = true;
 
 	void Start () {
 		// 將商城物品加入
-		pItemManager.addToItemInventory (4, 2);
+		pItemManager.addToItemInventory (14, 2);
 	}
 
 	void Update () {
 		// 改變玩家方向與圖片
 		if (Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.UpArrow)) {
 			direction = Direction.Up;
-			spriteParent.sprite = backward;
+			playerSprite.sprite = backward;
 		}
 		if (Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.DownArrow)) {
 			direction = Direction.Down;
-			spriteParent.sprite = forward;
+			playerSprite.sprite = forward;
 		}
 		if (Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.LeftArrow)) {
 			direction = Direction.Left;
-			spriteParent.sprite = left;
+			playerSprite.sprite = left;
 		}
 		if (Input.GetKey (KeyCode.D) || Input.GetKey (KeyCode.RightArrow)) {
 			direction = Direction.Right;
-			spriteParent.sprite = right;
+			playerSprite.sprite = right;
 		}
 
 		if (isActive) {
@@ -57,6 +69,65 @@ public class Player : Entity {
 			if (direction == Direction.Right) {
 				GetComponent<Rigidbody2D> ().transform.position += Vector3.right * speed * Time.deltaTime;
 			}
+		}
+	}
+
+	void OnMouseDown() {
+		if (!isOneClick) {
+			cameraDist = Camera.main.WorldToScreenPoint(transform.position);
+			posX = Input.mousePosition.x - cameraDist.x;
+			posY = Input.mousePosition.y - cameraDist.y;
+			spriteTransform.position = new Vector3(0, 0);
+			isOneClick = true;
+			timeForOneClick = Time.time;
+		}
+		else {
+			float d = Time.time - timeForOneClick;
+			Debug.Log ("[Player]Double Click" + d);
+			if(d <= doubleClickTime) {
+				setActive(false);
+				isOneClick = false;
+			}
+			else {
+				posX = Input.mousePosition.x - cameraDist.x;
+				posY = Input.mousePosition.y - cameraDist.y;
+				timeForOneClick = Time.time;
+			}
+		}
+	}
+
+	void OnMouseDrag() {
+		float d = Time.time - timeForOneClick;
+		if (d >= delay) {
+			setActive(false);
+			Vector3 curPos = new Vector3(Input.mousePosition.x - posX, Input.mousePosition.y - posY, cameraDist.z);
+			Vector3 worldPos = Camera.main.ScreenToWorldPoint(curPos) - transform.position;
+			Vector3 dir;
+			float degree = Mathf.Atan2 (worldPos.x, worldPos.y) * Mathf.Rad2Deg;
+			float absDeg = Mathf.Abs (degree);
+			Debug.Log ("[Player]worldPos" + degree);
+			if(absDeg >= 0f && absDeg <= 22.5f)
+				dir = new Vector2(0, 1);
+			else if(absDeg > 22.5f && absDeg <= 67.5f)
+				dir = new Vector2(1, 1);
+			else if(absDeg > 67.5f && absDeg <= 112.5f)
+				dir = new Vector2(1, 0);
+			else if(absDeg > 112.5f && absDeg <= 157.5f)
+				dir = new Vector2(1, -1);
+			else
+				dir = new Vector2(0, -1);
+
+			if(degree < 0)
+				dir.x *= -1;
+
+			dir /= Mathf.Sqrt (dir.x * dir.x + dir.y * dir.y);
+
+			float ml = Mathf.Max(Mathf.Abs(worldPos.x), Mathf.Abs(worldPos.y));
+
+			if(ml > dragLength)
+				ml = dragLength;
+
+			spriteTransform.position = dir * ml + transform.position;
 		}
 	}
 

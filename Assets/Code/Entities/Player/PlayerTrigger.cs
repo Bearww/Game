@@ -14,7 +14,7 @@ public class PlayerTrigger : MonoBehaviour {
 			int index = item.GetComponentInParent<SpawnItems> ().findSpawnItem (item);
 			//Debug.Log ("[ItemTrigger]Destroy item " + index.ToString());
 			if (index < 0) {
-				Debug.Log ("[ItemTrigger]Invalid item index");
+				Debug.Log ("[PlayerTrigger]Invalid item index");
 			}
 			else {
 				player.pItemManager.addToItemInventory (item.GetComponent<Item> ().id);
@@ -27,10 +27,10 @@ public class PlayerTrigger : MonoBehaviour {
 			int index = enemyTransform.GetComponentInParent<SpawnEnemies> ().findSpawnIndex (enemyTransform);
 			//Debug.Log ("[EnemyTrigger]Destroy enemy " + index.ToString());
 			if (index < 0) {
-				Debug.Log ("[EnemyTrigger]Invalid enemy index");
+				Debug.Log ("[PlayerTrigger]Invalid enemy index");
 			}
 			else {
-				Debug.Log ("[EnemyTrigger]Player hit");
+				Debug.Log ("[PlayerTrigger]Enemy hit");
 				Enemy enemy = enemyTransform.GetComponent<Enemy> ();
 				if(player.pItemManager.findInInventory(enemy.enemyItem.id) < 0) {
 					collisionDirection = getCollisionDirection (enemyTransform);
@@ -38,9 +38,7 @@ public class PlayerTrigger : MonoBehaviour {
 					//enemy.setActive(player.direction);
 				}
 				else {
-					int score = enemy.GetComponentInParent<SpawnEnemies> ().getEnemyScore(enemy);
-					gameManager.extraScore (score);
-					enemy.GetComponentInParent<SpawnEnemies> ().respawnEnemy (index);
+					gameManager.flirtWithGoddess(enemy, index);
 					player.pItemManager.removeFromItemInventory(enemy.enemyItem.id);
 				}
 			}
@@ -81,5 +79,9 @@ public class PlayerTrigger : MonoBehaviour {
 		if (degree < 0)
 			return Direction.Right;
 		return player.direction;
+	}
+
+	IEnumerator wait() {
+		yield return new WaitForSeconds (21);
 	}
 }

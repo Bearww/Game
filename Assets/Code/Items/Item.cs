@@ -7,10 +7,11 @@ using System.Collections;
 
 public class Item : MonoBehaviour {
 
+	private int stage;
+
 	public int id;
 	public string itemName;
 	public ItemType itemType;
-	public Sprite itemSprite;
 
 	void Start () {
 	
@@ -18,6 +19,14 @@ public class Item : MonoBehaviour {
 
 	void Update () {
 	
+	}
+
+	public int getStage() {
+		return stage;
+	}
+
+	public void setStage(int stage) {
+		this.stage = stage;
 	}
 }
 

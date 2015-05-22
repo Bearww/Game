@@ -18,18 +18,37 @@ public class EnemyManager : MonoBehaviour {
 	
 	}
 
-	public int getEnemyIndex(int id)
-	{
+	public int getEnemyIndex(int id) {
 		for (int i = 0; i < enemies.Count; i++) {
 			if(enemies[i].enemyTransform.GetComponent<Enemy> ().id == id)
 				return i;
 		}
 		return -1;
 	}
+
+	public Sprite getEnemySprite(int id) {
+		for (int i = 0; i < enemies.Count; i++) {
+			if(enemies[i].enemyTransform.GetComponent<Enemy> ().id == id)
+				return enemies[i].enemySprite;
+		}
+		return null;
+	}
+
+	public void unlockEnemy(int id) {
+		for (int i = 0; i < enemies.Count; i++) {
+			if(enemies[i].enemyTransform.GetComponent<Enemy> ().id == id)
+				enemies[i].enemyLock = false;
+		}
+	}
 }
 
 [System.Serializable]
 public class Enemies {
 	public Transform enemyTransform;
-	public int enemyAmount;
+	public Sprite enemySprite;
+	public bool enemyLock;
+
+	public Enemies() {
+		enemyLock = true;
+	}
 }

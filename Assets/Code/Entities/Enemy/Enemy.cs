@@ -16,7 +16,7 @@ public class Enemy : Entity {
 	private bool isActive = true;
 	private bool isEscape = false;
 
-	public int stage;
+	private int stage;
 
 	public int id;
 	public string enemyName;

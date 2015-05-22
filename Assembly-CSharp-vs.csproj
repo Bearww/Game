@@ -52,6 +52,7 @@
      <Compile Include="Assets\Code\Entities\Player\Player.cs" />
      <Compile Include="Assets\Code\Entities\Player\PlayerTrigger.cs" />
      <Compile Include="Assets\Code\GameManager.cs" />
+     <Compile Include="Assets\Code\Goddess.cs" />
      <Compile Include="Assets\Code\Inventories\Player\PlayerItemManager.cs" />
      <Compile Include="Assets\Code\Items\BuffItem.cs" />
      <Compile Include="Assets\Code\Items\Item.cs" />
@@ -61,6 +62,8 @@
      <Compile Include="Assets\Code\Level\Level.cs" />
      <Compile Include="Assets\Code\Level\SpawnEnemies.cs" />
      <Compile Include="Assets\Code\Level\SpawnItems.cs" />
+     <Compile Include="Assets\Code\MouseClick.cs" />
+     <Compile Include="Assets\Code\Testing.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

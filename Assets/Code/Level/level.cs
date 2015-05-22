@@ -67,7 +67,7 @@ public class Level : MonoBehaviour {
 					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
 				}
 				if(tileColours[x + y * levelWidth] == spawnItemColour) {
-					spawnItems.addSpawnPoint(0, new Vector3(x, y));
+					spawnItems.addSpawnPoint(new Vector3(x, y));
 					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
 				}
 			}

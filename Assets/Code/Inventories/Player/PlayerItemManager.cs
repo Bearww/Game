@@ -128,12 +128,13 @@ public class PlayerItemManager : MonoBehaviour {
 
 	private void updateItemUI(int invIndex) {
 		Item item = items [invIndex].item;
+		Sprite itemSprite = itemManager.getItemSprite (item.id);
 		int amountOfItem, index;
 
 		if (item.itemType == ItemType.Role) {
 			amountOfItem = roleItem.Length;
 			for(index = 0; index < amountOfItem; index++) {
-				if(roleItem[index].GetComponent<Image> ().sprite == item.itemSprite) {
+				if(roleItem[index].GetComponent<Image> ().sprite == itemSprite) {
 					break;
 				}
 			}
@@ -147,8 +148,8 @@ public class PlayerItemManager : MonoBehaviour {
 
 	private void updateItemUI(int itemIndex, int invIndex) {
 		Item item = items [invIndex].item;
+		Sprite itemSprite = itemManager.getItemSprite (item.id);
 		int amountOfItem;
-		Sprite itemSprite = itemManager.items [itemIndex].itemTransform.GetComponent<Item> ().itemSprite;
 
 		if (item.itemType == ItemType.Role) {
 			amountOfItem = roleItem.Length;
