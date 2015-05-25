@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Item
   - Enemy
+  - Tile
   - EnemyManager
+  - Buff
   layers:
   - Default
   - TransparentFX

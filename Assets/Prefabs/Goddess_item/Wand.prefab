@@ -27,7 +27,7 @@ GameObject:
   - 114: {fileID: 11401310}
   - 50: {fileID: 5090118}
   - 58: {fileID: 5863034}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wand
   m_TagString: Item
   m_Icon: {fileID: 0}

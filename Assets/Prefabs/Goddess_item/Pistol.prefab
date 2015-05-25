@@ -27,7 +27,7 @@ GameObject:
   - 114: {fileID: 11450836}
   - 50: {fileID: 5061324}
   - 58: {fileID: 5865374}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pistol
   m_TagString: Item
   m_Icon: {fileID: 0}

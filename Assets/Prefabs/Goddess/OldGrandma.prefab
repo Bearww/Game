@@ -11,7 +11,7 @@ GameObject:
   - 50: {fileID: 5036758}
   - 114: {fileID: 11457142}
   - 58: {fileID: 5824016}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: OldGrandma
   m_TagString: Enemy
   m_Icon: {fileID: 0}

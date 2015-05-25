@@ -11,7 +11,7 @@ GameObject:
   - 50: {fileID: 5079826}
   - 114: {fileID: 11453720}
   - 58: {fileID: 5826672}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Nurse
   m_TagString: Enemy
   m_Icon: {fileID: 0}

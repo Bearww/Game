@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	private int gameMode;
+	private GameMode gameMode;
 
 	private int gameStage;
 
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
 	public int minuteTimeLimits;
 
 	public Text timeText;
+	public Text countDownText;
 
 	public Text scoreText;
 
@@ -35,13 +36,16 @@ public class GameManager : MonoBehaviour {
 	public Goddess goddess;
 	public SpawnEnemies spawner;
 
+	public int minFavorability;
+
 	void Awake () {
 		Debug.Log ("[GameManager]Game Stages " + stages.Count);
-		gameMode = 0;
+		gameMode = GameMode.Ready;
 		gameStage = 0;
 		gameScore = stageScore = basicScore = 0;
-		gameTime = minuteTimeLimits * 60;
+		gameTime = 3;
 		addEnemy ();
+		player.setActive (false);
 		InvokeRepeating("countDown", 0.1f, 1f);
 	}
 
@@ -50,7 +54,22 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void countDown() {
-		if (gameMode == 0) {
+		if (gameMode == GameMode.Ready) {
+			if(gameTime > 0) {
+				countDownText.text = gameTime--.ToString();
+			}
+			else if(gameTime == 0) {
+				countDownText.text = "Go";
+				gameTime--;
+			}
+			else {
+				countDownText.gameObject.SetActive(false);
+				gameMode = GameMode.Normal;
+				gameTime = minuteTimeLimits * 60;
+				player.setActive(true);
+			}
+		}
+		if (gameMode == GameMode.Normal) {
 			int min = gameTime / 60;
 			int sec = gameTime % 60;
 			timeText.text = string.Format ("{0}:{1:00}", min, sec);
@@ -128,7 +147,7 @@ public class GameManager : MonoBehaviour {
 
 	public void flirtWithGoddess(Enemy e, int index) {
 		Debug.Log ("[GameManager]Flirt with goddess");
-		gameMode = 1;
+		gameMode = GameMode.Flirt;
 		goddessIndex = index;
 		goddessInfo = e;
 		player.gameObject.SetActive (false);
@@ -138,7 +157,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void goddessFavorability(int favorability) {
-		if (favorability < 5) {
+		if (favorability < minFavorability) {
 			Debug.Log ("[GameManager]Not captured heart");
 		}
 		else {
@@ -147,7 +166,14 @@ public class GameManager : MonoBehaviour {
 			extraScore (score);
 			goddessInfo.GetComponentInParent<SpawnEnemies> ().respawnEnemy (goddessIndex);
 		}
-		gameMode = 0;
+		gameMode = GameMode.Normal;
+	}
+
+	public void relentGoddess(Enemy e, int index) {
+		int score = e.GetComponentInParent<SpawnEnemies> ().getEnemyScore (e);
+		enemies.unlockEnemy(e.id);
+		extraScore (score);
+		e.GetComponentInParent<SpawnEnemies> ().respawnEnemy (index);
 	}
 }
 
@@ -173,4 +199,11 @@ public class StageEnemy {
 	public void setStage(int stage) {
 		this.stage = stage;
 	}
+}
+
+public enum GameMode {
+	Ready,
+	Normal,
+	Flirt,
+	Final
 }

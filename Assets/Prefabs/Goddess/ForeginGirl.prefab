@@ -11,7 +11,7 @@ GameObject:
   - 50: {fileID: 5002600}
   - 114: {fileID: 11455740}
   - 58: {fileID: 5872212}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ForeginGirl
   m_TagString: Enemy
   m_Icon: {fileID: 0}

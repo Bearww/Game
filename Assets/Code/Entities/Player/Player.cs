@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 /*
@@ -7,10 +6,14 @@ using System.Collections;
  */
 public class Player : Entity {
 
+	private Direction lastDir;
+	private bool isDrag = false;
 	private bool isOneClick = false;
 	private float timeForOneClick;
+	private float flyingDuration;
 
 	private Vector3 cameraDist;
+	private Vector3 dragDir;
 	private float posX;
 	private float posY;
 
@@ -27,32 +30,54 @@ public class Player : Entity {
 
 	public float delay;
 	public float doubleClickTime;
-	public float dragLength;
+	public float dragDeviation;
+	public float dragRadius;
+	public float magnitude;
+
+	public float touchDeviation;
 
 	public bool isActive = true;
 
 	void Start () {
 		// 將商城物品加入
+		pItemManager.addToItemInventory (13, 2);
 		pItemManager.addToItemInventory (14, 2);
 	}
 
 	void Update () {
 		// 改變玩家方向與圖片
-		if (Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.UpArrow)) {
+		if (Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.UpArrow)) {
 			direction = Direction.Up;
 			playerSprite.sprite = backward;
 		}
-		if (Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.DownArrow)) {
+		if (Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.DownArrow)) {
 			direction = Direction.Down;
 			playerSprite.sprite = forward;
 		}
-		if (Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.LeftArrow)) {
+		if (Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.LeftArrow)) {
 			direction = Direction.Left;
 			playerSprite.sprite = left;
 		}
-		if (Input.GetKey (KeyCode.D) || Input.GetKey (KeyCode.RightArrow)) {
+		if (Input.GetKeyDown (KeyCode.D) || Input.GetKeyDown (KeyCode.RightArrow)) {
 			direction = Direction.Right;
 			playerSprite.sprite = right;
+		}
+
+		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Moved) {
+			Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+			float degree = Mathf.Atan2 (touchDeltaPosition.x, touchDeltaPosition.y) * Mathf.Rad2Deg;
+			float absDeg = Mathf.Abs (degree);
+
+			if(absDeg >= 0f && absDeg <= touchDeviation)
+				direction = Direction.Up;
+			else if(absDeg >= 180f - touchDeviation)
+				direction = Direction.Down;
+			else if(absDeg > 90f - touchDeviation && absDeg <= 90f + touchDeviation) {
+				if(degree > 0)
+					direction = Direction.Right;
+				else
+					direction = Direction.Left;
+			}
 		}
 
 		if (isActive) {
@@ -70,6 +95,9 @@ public class Player : Entity {
 				GetComponent<Rigidbody2D> ().transform.position += Vector3.right * speed * Time.deltaTime;
 			}
 		}
+		else {
+			tryActive();
+		}
 	}
 
 	void OnMouseDown() {
@@ -77,13 +105,12 @@ public class Player : Entity {
 			cameraDist = Camera.main.WorldToScreenPoint(transform.position);
 			posX = Input.mousePosition.x - cameraDist.x;
 			posY = Input.mousePosition.y - cameraDist.y;
-			spriteTransform.position = new Vector3(0, 0);
 			isOneClick = true;
 			timeForOneClick = Time.time;
 		}
 		else {
 			float d = Time.time - timeForOneClick;
-			Debug.Log ("[Player]Double Click" + d);
+			//Debug.Log ("[Player]Double Click" + d);
 			if(d <= doubleClickTime) {
 				setActive(false);
 				isOneClick = false;
@@ -99,42 +126,84 @@ public class Player : Entity {
 	void OnMouseDrag() {
 		float d = Time.time - timeForOneClick;
 		if (d >= delay) {
-			setActive(false);
 			Vector3 curPos = new Vector3(Input.mousePosition.x - posX, Input.mousePosition.y - posY, cameraDist.z);
 			Vector3 worldPos = Camera.main.ScreenToWorldPoint(curPos) - transform.position;
-			Vector3 dir;
-			float degree = Mathf.Atan2 (worldPos.x, worldPos.y) * Mathf.Rad2Deg;
-			float absDeg = Mathf.Abs (degree);
-			Debug.Log ("[Player]worldPos" + degree);
-			if(absDeg >= 0f && absDeg <= 22.5f)
-				dir = new Vector2(0, 1);
-			else if(absDeg > 22.5f && absDeg <= 67.5f)
-				dir = new Vector2(1, 1);
-			else if(absDeg > 67.5f && absDeg <= 112.5f)
-				dir = new Vector2(1, 0);
-			else if(absDeg > 112.5f && absDeg <= 157.5f)
-				dir = new Vector2(1, -1);
-			else
-				dir = new Vector2(0, -1);
 
-			if(degree < 0)
-				dir.x *= -1;
+			if(Vector3.Distance(worldPos, new Vector3(0, 0, 0)) > dragDeviation) {
+				isDrag = true;
+				setActive(false);
+				float degree = Mathf.Atan2 (worldPos.x, worldPos.y) * Mathf.Rad2Deg;
+				float absDeg = Mathf.Abs (degree);
 
-			dir /= Mathf.Sqrt (dir.x * dir.x + dir.y * dir.y);
+				if(absDeg >= 0f && absDeg <= 22.5f)
+					dragDir = new Vector2(0, 1);
+				else if(absDeg > 22.5f && absDeg <= 67.5f)
+					dragDir = new Vector2(1, 1);
+				else if(absDeg > 67.5f && absDeg <= 112.5f)
+					dragDir = new Vector2(1, 0);
+				else if(absDeg > 112.5f && absDeg <= 157.5f)
+					dragDir = new Vector2(1, -1);
+				else
+					dragDir = new Vector2(0, -1);
 
-			float ml = Mathf.Max(Mathf.Abs(worldPos.x), Mathf.Abs(worldPos.y));
+				if(degree < 0)
+					dragDir.x *= -1;
 
-			if(ml > dragLength)
-				ml = dragLength;
+				dragDir /= Mathf.Sqrt (dragDir.x * dragDir.x + dragDir.y * dragDir.y);
 
-			spriteTransform.position = dir * ml + transform.position;
+				float ml = Mathf.Max(Mathf.Abs(worldPos.x), Mathf.Abs(worldPos.y));
+
+				if(ml > dragRadius)
+					ml = dragRadius;
+
+				spriteTransform.position = dragDir * ml + transform.position;
+			}
 		}
+	}
+
+	void OnMouseUp() {
+		if (isDrag) {
+			isDrag = false;
+			setActive(false);
+			spriteTransform.position = transform.position;
+			Physics2D.IgnoreLayerCollision(9, 9);
+			Physics2D.IgnoreLayerCollision(9, 11);
+			GetComponent<Rigidbody2D> ().isKinematic = true;
+			GetComponent<Rigidbody2D> ().velocity = -dragDir * magnitude * 20;
+			//Physisc2D.IgnoreLayerCollision();
+			flyingDuration = 1f;
+			StartCoroutine(stopFlying());
+		}
+	}
+
+	IEnumerator stopFlying() {
+		yield return new WaitForSeconds (flyingDuration);
+		//Debug.Log ("[Player]Stop Fly");
+		GetComponent<Rigidbody2D> ().isKinematic = false;
+		GetComponent<Rigidbody2D> ().velocity = new Vector2(0, 0);
+		Physics2D.IgnoreLayerCollision(9, 9, false);
+		Physics2D.IgnoreLayerCollision(9, 11, false);
+
+		Collider2D [] cols = Physics2D.OverlapCircleAll (GetComponent<Rigidbody2D> ().position, 0.5f);
+		if(cols.Length > 1) {
+			GetComponent<Rigidbody2D> ().AddRelativeForce(new Vector2(dragDir.x, dragDir.y));
+		}
+		setActive (false);
 	}
 
 	public void setActive(bool active) {
 		isActive = active;
+		if (!active) {
+			lastDir = direction;
+		}
 	}
 
+	public void tryActive() {
+		if (lastDir != direction) {
+			setActive (true);
+		}
+	}
+	
 	/*
 	public void tryMoving() {
 		Vector2 testDir = new Vector2 ();

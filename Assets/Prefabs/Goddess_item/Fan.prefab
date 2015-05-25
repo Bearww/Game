@@ -27,7 +27,7 @@ GameObject:
   - 114: {fileID: 11448478}
   - 50: {fileID: 5098838}
   - 58: {fileID: 5851714}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fan
   m_TagString: Item
   m_Icon: {fileID: 0}

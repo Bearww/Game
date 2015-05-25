@@ -44,12 +44,13 @@ public class PlayerItemManager : MonoBehaviour {
 		else {
 			Debug.Log (string.Format("[PlayerItemManager]Add itemId:{0} amount:{1}", itemId, amount));
 			int invIndex = findInInventory(itemId);
-			if(invIndex >= 0)
-				items[invIndex].amount += amount;
-			else {
+			if(invIndex < 0) {
 				Inventory inv = new Inventory(itemManager.items[itemIndex].itemTransform.GetComponent<Item> (), amount);
 				items.Add(inv);
-				invIndex = 0;
+				invIndex = items.Count - 1;
+			}
+			else {
+				items[invIndex].amount += amount;
 			}
 			updateItemUI(itemIndex, invIndex);
 		}
@@ -79,12 +80,21 @@ public class PlayerItemManager : MonoBehaviour {
 		}
 		else {
 			int invIndex = findInInventory(itemId);
-			if(invIndex < 0)
+			if(invIndex < 0) {
 				Debug.Log ("[PlayerItemManager | Remove]Invalid item inv");
+				return;
+			}
 			else {
 				Debug.Log (string.Format("[PlayerItemManager]Remove itemId:{0} amount:{1}", itemId, amount));
-				items[invIndex].amount -= amount;
+				if(items[invIndex].amount < amount) {
+					Debug.Log (string.Format("[PlayerItemManager]Remove invalid itemId:{0} amount:{1}", itemId, amount));
+					return;
+				}
+				else {
+					items[invIndex].amount -= amount;
+				}
 			}
+			updateItemUI(invIndex);
 		}
 	}
 
@@ -134,15 +144,30 @@ public class PlayerItemManager : MonoBehaviour {
 		if (item.itemType == ItemType.Role) {
 			amountOfItem = roleItem.Length;
 			for(index = 0; index < amountOfItem; index++) {
-				if(roleItem[index].GetComponent<Image> ().sprite == itemSprite) {
+				if(roleItem[index].sprite == itemSprite) {
 					break;
 				}
 			}
 
 			for(; index < amountOfItem - 1; index++) {
-				roleItem[index].GetComponent<Image> ().sprite = roleItem[index + 1].GetComponent<Image> ().sprite;
+				roleItem[index].sprite = roleItem[index + 1].sprite;
+				roleItem[index].color = new Color(1, 1, 1, 1);
 			}
 			roleItem[amountOfItem - 1].sprite = null;
+			roleItem[amountOfItem - 1].color = new Color(1, 1, 1, 0);
+		}
+		if (item.itemType == ItemType.Store) {
+			amountOfItem = storeItem.Length;
+			for(index = 0; index < amountOfItem; index++) {
+				if(storeItem[index].sprite == itemSprite) {
+					if(items[invIndex].amount > 1)
+						storeItem[index].GetComponentInChildren<Text> ().text = items[invIndex].amount.ToString();
+					else if(items[invIndex].amount == 1)
+						storeItem[index].GetComponentInChildren<Text> ().text = "";
+					else
+						storeItem[index].color = new Color(0.5f, 0.5f, 0.5f, 1);
+				}
+			}
 		}
 	}
 
@@ -154,21 +179,26 @@ public class PlayerItemManager : MonoBehaviour {
 		if (item.itemType == ItemType.Role) {
 			amountOfItem = roleItem.Length;
 			for(int index = 0; index < amountOfItem; index++) {
-				if(roleItem[index].GetComponent<Image> ().sprite == null) {
+				if(roleItem[index].sprite == null) {
 					roleItem[index].sprite = itemSprite;
+					roleItem[index].color = new Color(1, 1, 1, 1);
 					return;
 				}
 			}
 			removeFromItemInventory(ItemType.Role);
 			roleItem[amountOfItem - 1].sprite = itemSprite;
+			roleItem[amountOfItem - 1].color = new Color(1, 1, 1, 1);
 		}
-
 		if (item.itemType == ItemType.Store) {
 			amountOfItem = storeItem.Length;
 			for(int index = 0; index < amountOfItem; index++) {
-				if(storeItem[index].GetComponent<Image> ().sprite == null ||
-				   storeItem[index].GetComponent<Image> ().sprite == itemSprite) {
+				if(storeItem[index].sprite == null ||
+				   storeItem[index].sprite == itemSprite) {
+					if(storeItem[index].sprite == null) {
+						storeItem[index].GetComponent<StoreItem> ().setItem (itemManager.getItem(item), itemSprite);
+					}
 					storeItem[index].sprite = itemSprite;
+					storeItem[index].color = new Color(1, 1, 1, 1);
 					storeItem[index].GetComponentInChildren<Text> ().text = items[invIndex].amount.ToString ();
 					return;
 				}

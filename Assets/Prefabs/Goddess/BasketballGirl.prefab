@@ -11,7 +11,7 @@ GameObject:
   - 50: {fileID: 5046090}
   - 114: {fileID: 11418444}
   - 58: {fileID: 5839864}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BasketballGirl
   m_TagString: Enemy
   m_Icon: {fileID: 0}

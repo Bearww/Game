@@ -59,6 +59,7 @@
      <Compile Include="Assets\Code\Items\ItemManager.cs" />
      <Compile Include="Assets\Code\Items\SpecialItem.cs" />
      <Compile Include="Assets\Code\Items\StoreItem.cs" />
+     <Compile Include="Assets\Code\Items\UseItem.cs" />
      <Compile Include="Assets\Code\Level\Level.cs" />
      <Compile Include="Assets\Code\Level\SpawnEnemies.cs" />
      <Compile Include="Assets\Code\Level\SpawnItems.cs" />

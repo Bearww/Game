@@ -27,7 +27,7 @@ GameObject:
   - 50: {fileID: 5005368}
   - 114: {fileID: 11454396}
   - 58: {fileID: 5830022}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Historian
   m_TagString: Enemy
   m_Icon: {fileID: 0}

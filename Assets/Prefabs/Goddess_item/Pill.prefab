@@ -27,7 +27,7 @@ GameObject:
   - 114: {fileID: 11477814}
   - 50: {fileID: 5031496}
   - 58: {fileID: 5842508}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pill
   m_TagString: Item
   m_Icon: {fileID: 0}

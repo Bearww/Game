@@ -11,7 +11,7 @@ GameObject:
   - 114: {fileID: 11488238}
   - 50: {fileID: 5077468}
   - 58: {fileID: 5812842}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Skateboard
   m_TagString: Item
   m_Icon: {fileID: 0}

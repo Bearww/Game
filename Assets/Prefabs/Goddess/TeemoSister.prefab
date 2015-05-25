@@ -11,7 +11,7 @@ GameObject:
   - 50: {fileID: 5088044}
   - 114: {fileID: 11440986}
   - 58: {fileID: 5867856}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TeemoSister
   m_TagString: Enemy
   m_Icon: {fileID: 0}

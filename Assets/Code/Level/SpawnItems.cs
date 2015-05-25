@@ -9,6 +9,8 @@ public class SpawnItems : MonoBehaviour {
 
 	public ItemManager itemManager;
 
+	public float respawnTime;
+
 	public List<SpawnPoint> spawnPoints;
 
 	public List<Transform> stageProperty;
@@ -130,7 +132,7 @@ public class SpawnItems : MonoBehaviour {
 	}
 
 	IEnumerator waitForRespawn(int index) {
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(respawnTime);
 		Transform item = getSpawnItem();
 		spawn (index, item);
 	}

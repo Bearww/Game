@@ -32,7 +32,10 @@ public class PlayerTrigger : MonoBehaviour {
 			else {
 				Debug.Log ("[PlayerTrigger]Enemy hit");
 				Enemy enemy = enemyTransform.GetComponent<Enemy> ();
-				if(player.pItemManager.findInInventory(enemy.enemyItem.id) < 0) {
+				if(player.GetComponent<Rigidbody2D> ().isKinematic) {
+					gameManager.relentGoddess (enemy, index);
+				}
+				else if(player.pItemManager.findInInventory(enemy.enemyItem.id) < 0) {
 					collisionDirection = getCollisionDirection (enemyTransform);
 					player.setActive (false);
 					//enemy.setActive(player.direction);
@@ -51,11 +54,36 @@ public class PlayerTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D other) {
-		collisionDirection = getCollisionDirection (other.GetComponent<Transform> ());
-		if (player.direction == collisionDirection) {
-			player.setActive(false);
-		} else {
-			player.setActive(true);
+		if (player.GetComponent<Rigidbody2D> ().isKinematic != true) {
+			if (Vector3.Distance (player.transform.position, other.GetComponent<Transform> ().position) < 0.5f) {
+				int r = (int)Random.Range (0f, 8.9f);
+				Vector3 pp = new Vector2 (r % 3 - 1, r / 3 - 1);
+				if (player.transform.position.x + pp.x < 0f || player.transform.position.x + pp.x > 63f)
+					pp.x *= -1;
+				if (player.transform.position.y + pp.y < 0f || player.transform.position.y + pp.y > 63f)
+					pp.y *= -1;
+				player.transform.position += pp;
+				player.setActive (false);
+			}
+			else {
+				collisionDirection = getCollisionDirection (other.GetComponent<Transform> ());
+				if (player.direction == collisionDirection) {
+					player.tryActive ();
+					Vector3 tryDir = new Vector3 ();
+					if (player.direction == Direction.Up)
+						tryDir = Vector3.up;
+					if (player.direction == Direction.Down)
+						tryDir = Vector3.down;
+					if (player.direction == Direction.Left)
+						tryDir = Vector3.left;
+					if (player.direction == Direction.Right)
+						tryDir = Vector3.right;
+					tryDir *= 0.001f;
+					player.transform.position -= tryDir;
+				} else if (other.gameObject.CompareTag ("Enemy") != true) {
+					player.setActive (true);
+				}
+			}
 		}
 	}
 
@@ -63,7 +91,7 @@ public class PlayerTrigger : MonoBehaviour {
 		//Debug.Log ("[PlayerTrigger]Trigger Exit");
 		if(other.gameObject.CompareTag("Enemy")) {
 			//Debug.Log ("[EnemyTrigger]Player exit");
-			player.setActive(true);
+			player.setActive (true);
 		}
 	}
 
@@ -79,9 +107,5 @@ public class PlayerTrigger : MonoBehaviour {
 		if (degree < 0)
 			return Direction.Right;
 		return player.direction;
-	}
-
-	IEnumerator wait() {
-		yield return new WaitForSeconds (21);
 	}
 }

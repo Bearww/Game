@@ -1,24 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BuffItem : Item {
+public class BuffItem : MonoBehaviour {
 
-	public float  itemDuration;
-	public ItemEffect itemEffect;	
-
-	void Start () {
-	
-	}
-
-	void Update () {
-	
-	}
+	public float itemDuration;
+	public ItemEffect itemEffect;
 }
 
 public enum ItemEffect
 {
 	Move,
 	Role,
-	time,
+	GameIime,
 	Map
 }

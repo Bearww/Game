@@ -9,6 +9,7 @@ public class SpawnEnemies : MonoBehaviour {
 	private List<int> spawnAmount = new List<int> ();
 	private List<float> spawnRatio = new List<float> ();
 
+	public float respawnTime;
 	public List<SpawnPoint> spawnPoints;
 	public List<EnemyPath> spawnPath;
 	public SpawnItems spawnItems;
@@ -130,7 +131,7 @@ public class SpawnEnemies : MonoBehaviour {
 	}
 	
 	IEnumerator waitForRespawn(int index) {
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (respawnTime);
 		StageEnemy enemy = getSpawnEnemy();
 		spawn (index, enemy);
 	}

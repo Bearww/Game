@@ -8,10 +8,11 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 453010}
-  - 114: {fileID: 11410222}
   - 50: {fileID: 5073388}
   - 58: {fileID: 5875240}
-  m_Layer: 0
+  - 114: {fileID: 11457386}
+  - 114: {fileID: 11423110}
+  m_Layer: 10
   m_Name: Apple
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -87,7 +88,25 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .5
---- !u!114 &11410222
+--- !u!114 &11423110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 159152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80eb091762a056246a89739eafdaf467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDuration: 10
+  itemEffect: 0
+  isUsable: 0
+  bufImage: {fileID: 0}
+  cd: 10
+  price: 10
+  description: Add speed
+--- !u!114 &11457386
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
