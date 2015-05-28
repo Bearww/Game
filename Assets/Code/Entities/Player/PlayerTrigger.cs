@@ -5,6 +5,7 @@ public class PlayerTrigger : MonoBehaviour {
 
 	public GameManager gameManager;
 	public Player player;
+	public BuffItem buf;
 	private Direction collisionDirection;
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -32,17 +33,26 @@ public class PlayerTrigger : MonoBehaviour {
 			else {
 				Debug.Log ("[PlayerTrigger]Enemy hit");
 				Enemy enemy = enemyTransform.GetComponent<Enemy> ();
-				if(player.GetComponent<Rigidbody2D> ().isKinematic) {
+				PlayerStatus ps = player.getPlayerStatus();
+				if(ps == PlayerStatus.Special) {
 					gameManager.relentGoddess (enemy, index);
 				}
-				else if(player.pItemManager.findInInventory(enemy.enemyItem.id) < 0) {
-					collisionDirection = getCollisionDirection (enemyTransform);
-					player.setActive (false);
-					//enemy.setActive(player.direction);
+				else if(ps == PlayerStatus.UseItem) {
+					int effect = buf.getItemEffect();
+					if(effect == 0)
+						gameManager.relentGoddess (enemy, index);
+					else if(effect > 0)
+						buf.getItemDebuff();
 				}
 				else {
-					gameManager.flirtWithGoddess(enemy, index);
-					player.pItemManager.removeFromItemInventory(enemy.enemyItem.id);
+					if(player.pItemManager.findInInventory(enemy.enemyItem.id) < 0) {
+						collisionDirection = getCollisionDirection (enemyTransform);
+						player.setActive (false);
+					}
+					else {
+						gameManager.flirtWithGoddess(enemy, index);
+						player.pItemManager.removeFromItemInventory(enemy.enemyItem.id);
+					}
 				}
 			}
 		}
@@ -54,7 +64,8 @@ public class PlayerTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D other) {
-		if (player.GetComponent<Rigidbody2D> ().isKinematic != true) {
+		PlayerStatus ps = player.getPlayerStatus ();
+		if(ps == PlayerStatus.Normal) {
 			if (Vector3.Distance (player.transform.position, other.GetComponent<Transform> ().position) < 0.5f) {
 				int r = (int)Random.Range (0f, 8.9f);
 				Vector3 pp = new Vector2 (r % 3 - 1, r / 3 - 1);
@@ -88,10 +99,12 @@ public class PlayerTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
-		//Debug.Log ("[PlayerTrigger]Trigger Exit");
-		if(other.gameObject.CompareTag("Enemy")) {
-			//Debug.Log ("[EnemyTrigger]Player exit");
-			player.setActive (true);
+		PlayerStatus ps = player.getPlayerStatus ();
+		if (ps == PlayerStatus.Normal) {
+			if (other.gameObject.CompareTag ("Enemy")) {
+				//Debug.Log ("[EnemyTrigger]Player exit");
+				player.setActive (true);
+			}
 		}
 	}
 

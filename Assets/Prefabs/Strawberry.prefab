@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 427200}
   - 114: {fileID: 11476326}
   - 50: {fileID: 5000350}
+  - 114: {fileID: 11423616}
   m_Layer: 0
   m_Name: Strawberry
   m_TagString: Item
@@ -73,6 +74,21 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
+--- !u!114 &11423616
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962fb78750d7631429d224880680430b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 0
+  itemPower: 0
+  itemDuration: 10
+  isDebuff: 1
 --- !u!114 &11476326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,10 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f348ac742c20cc04a80d36c7f490e2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
+  id: 18
   itemName: Strawberry
-  itemType: 0
-  itemSprite: {fileID: 21300020, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  itemType: 1
 --- !u!212 &21210208
 SpriteRenderer:
   m_ObjectHideFlags: 1

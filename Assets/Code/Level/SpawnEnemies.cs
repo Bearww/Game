@@ -14,12 +14,6 @@ public class SpawnEnemies : MonoBehaviour {
 	public List<EnemyPath> spawnPath;
 	public SpawnItems spawnItems;
 
-	void Start () {
-		Debug.Log ("[SpawnEnemy]SpawnEnemy " + spawnEnemy.Count);
-		startSpawnEnemies ();
-		spawnItems.startSpawnItems ();
-	}
-
 	public void addSpawnPoint(Vector3 enemyPosition) {
 		//Debug.Log ("[Spawnenemy]Add enemy " + enemyId.ToString());
 		SpawnPoint spawnPoint = new SpawnPoint (enemyPosition);
@@ -120,6 +114,30 @@ public class SpawnEnemies : MonoBehaviour {
 		StartCoroutine(waitForRespawn(index));
 	}
 
+	public void startEnemies() {
+		for (int index = 0; index < spawnPoints.Count; index++) {
+			if(spawnPoints[index].spawnTransform.gameObject != null)
+				spawnPoints[index].spawnTransform.GetComponent<Enemy> ().setActive(true);
+		}
+	}
+
+	public void startSpawnEnemies() {
+		Debug.Log ("[SpawnEnemy]SpawnEnemy " + spawnPoints.Count);
+		for (int index = 0; index < spawnPoints.Count; index++) {
+			//Debug.Log ("[SpawnEnemy]Spawn " + e);
+			StageEnemy enemy = getSpawnEnemy();
+			spawn (index, enemy);
+		}
+		spawnItems.startSpawnItems ();
+	}
+
+	public void stopEnemies() {
+		for (int index = 0; index < spawnPoints.Count; index++) {
+			if(spawnPoints[index].spawnTransform.gameObject != null)
+				spawnPoints[index].spawnTransform.GetComponent<Enemy> ().setActive(false);
+		}
+	}
+
 	public void stopSpawnEnemy(StageEnemy enemy) {
 		int index = spawnEnemy.FindIndex ((StageEnemy e) => (enemy.enemy == e.enemy));
 		if (index < 0) {
@@ -129,7 +147,7 @@ public class SpawnEnemies : MonoBehaviour {
 			spawnEnemy[index].enemyRatio = 0;
 		}
 	}
-	
+
 	IEnumerator waitForRespawn(int index) {
 		yield return new WaitForSeconds (respawnTime);
 		StageEnemy enemy = getSpawnEnemy();
@@ -192,14 +210,6 @@ public class SpawnEnemies : MonoBehaviour {
 
 		for (int i = 0, special = spawnSpecial.Count; i < spawnEnemy.Count; i++) {
 			spawnRatio[special + i] = (float)spawnEnemy[i].enemyRatio / total;
-		}
-	}
-
-	void startSpawnEnemies() {
-		for (int index = 0; index < spawnPoints.Count; index++) {
-			//Debug.Log ("[SpawnEnemy]Spawn " + e);
-			StageEnemy enemy = getSpawnEnemy();
-			spawn (index, enemy);
 		}
 	}
 

@@ -43,6 +43,8 @@ GameObject:
   - 224: {fileID: 22407400}
   - 222: {fileID: 22257588}
   - 114: {fileID: 11419312}
+  - 114: {fileID: 11418334}
+  - 114: {fileID: 11497270}
   m_Layer: 9
   m_Name: specialItem1
   m_TagString: Untagged
@@ -147,9 +149,10 @@ GameObject:
   - 224: {fileID: 22446558}
   - 222: {fileID: 22220006}
   - 114: {fileID: 11466840}
+  - 114: {fileID: 11454016}
   m_Layer: 9
   m_Name: debuff
-  m_TagString: Untagged
+  m_TagString: Debuff
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -198,6 +201,7 @@ GameObject:
   - 224: {fileID: 22472988}
   - 222: {fileID: 22266542}
   - 114: {fileID: 11453668}
+  - 114: {fileID: 11419040}
   m_Layer: 9
   m_Name: buff
   m_TagString: Buff
@@ -289,6 +293,8 @@ GameObject:
   - 224: {fileID: 22416548}
   - 222: {fileID: 22274844}
   - 114: {fileID: 11446142}
+  - 114: {fileID: 11403262}
+  - 114: {fileID: 11460542}
   m_Layer: 9
   m_Name: specialItem2
   m_TagString: Untagged
@@ -521,6 +527,22 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 176916}
   m_Enabled: 1
+--- !u!114 &11403262
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a505e5736a82147a4e82080c695d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 0
+  itemPower: 0
+  itemDuration: 0
+  isDebuff: 0
+  collectNumber: 0
 --- !u!114 &11408582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -534,6 +556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   player: {fileID: 11430548}
+  buf: {fileID: 11419040}
 --- !u!114 &11410734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -585,7 +608,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 
 --- !u!114 &11416000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -624,7 +647,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 11463466}
-          m_MethodName: OnMouseDown
+          m_MethodName: useItem
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -684,6 +707,37 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11418334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 126112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a505e5736a82147a4e82080c695d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 0
+  itemPower: 0
+  itemDuration: 0
+  isDebuff: 0
+  collectNumber: 0
+--- !u!114 &11419040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962fb78750d7631429d224880680430b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 0
+  itemPower: 0
+  itemDuration: 0
+  isDebuff: 0
 --- !u!114 &11419312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -696,8 +750,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 21300016, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -756,7 +810,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 
 --- !u!114 &11430548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -769,6 +823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  rate: 1
   pItemManager: {fileID: 11497148}
   forward: {fileID: 21300002, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
   backward: {fileID: 21300006, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
@@ -782,8 +837,9 @@ MonoBehaviour:
   dragDeviation: .200000003
   dragRadius: 3
   magnitude: .5
+  playerStatus: 0
+  isActive: 0
   touchDeviation: 20
-  isActive: 1
 --- !u!114 &11434684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -816,10 +872,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80eb091762a056246a89739eafdaf467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDuration: 0
   itemEffect: 0
-  isUsable: 0
-  bufImage: {fileID: 0}
+  itemPower: 0
+  itemDuration: 0
+  isDebuff: 0
   cd: 0
   price: 0
   description: 
@@ -835,8 +891,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 21300016, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -882,7 +938,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 11440638}
-          m_MethodName: OnMouseDown
+          m_MethodName: useItem
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -907,7 +963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -916,6 +972,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11454016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 151686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962fb78750d7631429d224880680430b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 0
+  itemPower: 0
+  itemDuration: 0
+  isDebuff: 0
 --- !u!114 &11454378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -958,6 +1029,36 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &11460542
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11403262}
+          m_MethodName: useItem
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &11462806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -995,10 +1096,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80eb091762a056246a89739eafdaf467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDuration: 0
   itemEffect: 0
-  isUsable: 0
-  bufImage: {fileID: 0}
+  itemPower: 0
+  itemDuration: 0
+  isDebuff: 0
   cd: 0
   price: 0
   description: 
@@ -1086,8 +1187,40 @@ MonoBehaviour:
   specialItem:
   - {fileID: 11419312}
   - {fileID: 11446142}
+  bufItem: {fileID: 11453668}
+  debufItem: {fileID: 11466840}
   itemManager: {fileID: 0}
   items: []
+--- !u!114 &11497270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 126112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11418334}
+          m_MethodName: useItem
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &11497692
 MonoBehaviour:
   m_ObjectHideFlags: 1

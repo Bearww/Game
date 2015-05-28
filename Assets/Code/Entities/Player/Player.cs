@@ -8,6 +8,7 @@ public class Player : Entity {
 
 	private Direction lastDir;
 	private bool isDrag = false;
+	private bool isInverse = false;
 	private bool isOneClick = false;
 	private float timeForOneClick;
 	private float flyingDuration;
@@ -16,6 +17,9 @@ public class Player : Entity {
 	private Vector3 dragDir;
 	private float posX;
 	private float posY;
+
+	private int ratePrecision = 1;
+	public int rate;
 
 	public PlayerItemManager pItemManager;
 
@@ -34,32 +38,58 @@ public class Player : Entity {
 	public float dragRadius;
 	public float magnitude;
 
-	public float touchDeviation;
+	// Player Status
+	public PlayerStatus playerStatus;
 
-	public bool isActive = true;
+	// Status : Normal
+	public bool isActive;
+
+	// Status : Use Item
+	private bool isUseItem;
+
+	// Status : Special
+	private bool isFlying;
+	private bool isInvincible;
+
+	public float touchDeviation;
 
 	void Start () {
 		// 將商城物品加入
-		pItemManager.addToItemInventory (13, 2);
+		pItemManager.addToItemInventory (13, 1);
 		pItemManager.addToItemInventory (14, 2);
+		pItemManager.addToItemInventory (15, 5);
+		pItemManager.addToItemInventory (16, 1);
+		pItemManager.addToItemInventory (17);
 	}
 
 	void Update () {
 		// 改變玩家方向與圖片
 		if (Input.GetKeyDown (KeyCode.W) || Input.GetKeyDown (KeyCode.UpArrow)) {
-			direction = Direction.Up;
+			if(!isInverse)
+				direction = Direction.Up;
+			else
+				direction = Direction.Down;
 			playerSprite.sprite = backward;
 		}
 		if (Input.GetKeyDown (KeyCode.S) || Input.GetKeyDown (KeyCode.DownArrow)) {
-			direction = Direction.Down;
+			if(!isInverse)
+				direction = Direction.Down;
+			else
+				direction = Direction.Up;
 			playerSprite.sprite = forward;
 		}
 		if (Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.LeftArrow)) {
-			direction = Direction.Left;
+			if(!isInverse)
+				direction = Direction.Left;
+			else
+				direction = Direction.Right;
 			playerSprite.sprite = left;
 		}
 		if (Input.GetKeyDown (KeyCode.D) || Input.GetKeyDown (KeyCode.RightArrow)) {
-			direction = Direction.Right;
+			if(!isInverse)
+				direction = Direction.Right;
+			else
+				direction = Direction.Left;
 			playerSprite.sprite = right;
 		}
 
@@ -83,21 +113,25 @@ public class Player : Entity {
 		if (isActive) {
 			// 依方向移動
 			if (direction == Direction.Up) {
-				GetComponent<Rigidbody2D> ().transform.position += Vector3.up * speed * Time.deltaTime;
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.up * speed * getRate() * Time.deltaTime;
 			}
 			if (direction == Direction.Down) {
-				GetComponent<Rigidbody2D> ().transform.position += Vector3.down * speed * Time.deltaTime;
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.down * speed * getRate() * Time.deltaTime;
 			}
 			if (direction == Direction.Left) {
-				GetComponent<Rigidbody2D> ().transform.position += Vector3.left * speed * Time.deltaTime;
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.left * speed * getRate() * Time.deltaTime;
 			}
 			if (direction == Direction.Right) {
-				GetComponent<Rigidbody2D> ().transform.position += Vector3.right * speed * Time.deltaTime;
+				GetComponent<Rigidbody2D> ().transform.position += Vector3.right * speed * getRate() * Time.deltaTime;
 			}
 		}
-		else {
+		else if(!GetComponent<Rigidbody2D> ().isKinematic) {
 			tryActive();
 		}
+	}
+
+	float getRate() {
+		return rate / ratePrecision;
 	}
 
 	void OnMouseDown() {
@@ -168,9 +202,10 @@ public class Player : Entity {
 			spriteTransform.position = transform.position;
 			Physics2D.IgnoreLayerCollision(9, 9);
 			Physics2D.IgnoreLayerCollision(9, 11);
+			isFlying = true;
+			playerStatus = PlayerStatus.Special;
 			GetComponent<Rigidbody2D> ().isKinematic = true;
 			GetComponent<Rigidbody2D> ().velocity = -dragDir * magnitude * 20;
-			//Physisc2D.IgnoreLayerCollision();
 			flyingDuration = 1f;
 			StartCoroutine(stopFlying());
 		}
@@ -179,6 +214,8 @@ public class Player : Entity {
 	IEnumerator stopFlying() {
 		yield return new WaitForSeconds (flyingDuration);
 		//Debug.Log ("[Player]Stop Fly");
+		isFlying = false;
+		playerStatus = PlayerStatus.Normal;
 		GetComponent<Rigidbody2D> ().isKinematic = false;
 		GetComponent<Rigidbody2D> ().velocity = new Vector2(0, 0);
 		Physics2D.IgnoreLayerCollision(9, 9, false);
@@ -191,11 +228,59 @@ public class Player : Entity {
 		setActive (false);
 	}
 
+	public void addSpeedEffect(float r) {
+		rate *= (int) r;
+		ratePrecision *= 100;
+	}
+
+	public PlayerStatus getPlayerStatus() {
+		if (isFlying)
+			return PlayerStatus.Special;
+		if (isInvincible)
+			return PlayerStatus.Special;
+		if (isUseItem)
+			return PlayerStatus.UseItem;
+		return PlayerStatus.Normal;
+	}
+
+	public void removeSpeedEffect(float r) {
+		rate /= (int) r;
+		ratePrecision /= 100;
+	}
+
 	public void setActive(bool active) {
 		isActive = active;
 		if (!active) {
 			lastDir = direction;
 		}
+	}
+
+	public void setInverse(bool inverse) {
+		isInverse = inverse;
+		if (direction == Direction.Up)
+			direction = Direction.Down;
+		else if (direction == Direction.Down)
+			direction = Direction.Up;
+		else if (direction == Direction.Left)
+			direction = Direction.Right;
+		else
+			direction = Direction.Left;
+	}
+
+	public void setInvincible(bool invincible) {
+		isInvincible = invincible;
+		if (isInvincible)
+			playerStatus = PlayerStatus.UseItem;
+		else
+			playerStatus = PlayerStatus.Normal;
+	}
+
+	public void setUseItem(bool use) {
+		isUseItem = use;
+		if (isUseItem)
+			playerStatus = PlayerStatus.UseItem;
+		else
+			playerStatus = PlayerStatus.Normal;
 	}
 
 	public void tryActive() {
@@ -231,4 +316,10 @@ public class Player : Entity {
 		}
 	}
 	*/
+}
+
+public enum PlayerStatus {
+	Normal,
+	UseItem,
+	Special
 }

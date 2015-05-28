@@ -261,6 +261,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 465274}
   - 212: {fileID: 21228100}
+  - 111: {fileID: 11194754}
   m_Layer: 0
   m_Name: 001-angle
   m_TagString: Untagged
@@ -565,6 +566,21 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 120096}
   m_Enabled: 1
+--- !u!111 &11194754
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191394}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 73eeba9f3d3bae94d97e05a8a122055d, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 73eeba9f3d3bae94d97e05a8a122055d, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &11400212
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -820,7 +836,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1783731295
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 05ac8a72fe9a98f4ca747e1bde1c8e33, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bf80f1eb9d61bed4aa1b6896db88e017, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!212 &21242748
 SpriteRenderer:

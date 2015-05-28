@@ -10,6 +10,7 @@ public class PlayerItemManager : MonoBehaviour {
 
 	public Image[] roleItem;
 	public Image[] storeItem, specialItem;
+	public Image bufItem, debufItem;
 
 	public ItemManager itemManager;
 
@@ -84,17 +85,18 @@ public class PlayerItemManager : MonoBehaviour {
 				Debug.Log ("[PlayerItemManager | Remove]Invalid item inv");
 				return;
 			}
+			Debug.Log (string.Format("[PlayerItemManager]Remove itemId:{0} amount:{1}", itemId, amount));
+			if(items[invIndex].amount < amount) {
+				Debug.Log (string.Format("[PlayerItemManager]Remove invalid itemId:{0} amount:{1}", itemId, amount));
+				return;
+			}
 			else {
-				Debug.Log (string.Format("[PlayerItemManager]Remove itemId:{0} amount:{1}", itemId, amount));
-				if(items[invIndex].amount < amount) {
-					Debug.Log (string.Format("[PlayerItemManager]Remove invalid itemId:{0} amount:{1}", itemId, amount));
-					return;
-				}
-				else {
-					items[invIndex].amount -= amount;
-				}
+				items[invIndex].amount -= amount;
 			}
 			updateItemUI(invIndex);
+			if(items[invIndex].amount == 0) {
+				items.RemoveAt(invIndex);
+			}
 		}
 	}
 
@@ -169,6 +171,18 @@ public class PlayerItemManager : MonoBehaviour {
 				}
 			}
 		}
+		if (item.itemType == ItemType.Special) {
+			amountOfItem = specialItem.Length;
+			for(index = 0; index < amountOfItem; index++) {
+				if(specialItem[index].sprite == itemSprite) {
+					break;
+				}
+			}
+			for(; index < amountOfItem - 1; index++) {
+				specialItem[index].GetComponent<SpecialItem> ().setSpecialItem(specialItem[index + 1]);
+			}
+			specialItem[amountOfItem - 1].GetComponent<SpecialItem> ().clearItem();
+		}
 	}
 
 	private void updateItemUI(int itemIndex, int invIndex) {
@@ -189,20 +203,47 @@ public class PlayerItemManager : MonoBehaviour {
 			roleItem[amountOfItem - 1].sprite = itemSprite;
 			roleItem[amountOfItem - 1].color = new Color(1, 1, 1, 1);
 		}
+		if (item.itemType == ItemType.Buff) {
+			if(item.GetComponent<BuffItem> ().isDebuff) {
+				debufItem.GetComponent<BuffItem> ().setItem (item, itemSprite);
+			}
+			else {
+				bufItem.GetComponent<BuffItem> ().setItem (item, itemSprite);
+			}
+		}
 		if (item.itemType == ItemType.Store) {
 			amountOfItem = storeItem.Length;
 			for(int index = 0; index < amountOfItem; index++) {
 				if(storeItem[index].sprite == null ||
 				   storeItem[index].sprite == itemSprite) {
 					if(storeItem[index].sprite == null) {
-						storeItem[index].GetComponent<StoreItem> ().setItem (itemManager.getItem(item), itemSprite);
+						storeItem[index].GetComponent<StoreItem> ().setStoreItem (item, itemSprite);
 					}
 					storeItem[index].sprite = itemSprite;
 					storeItem[index].color = new Color(1, 1, 1, 1);
-					storeItem[index].GetComponentInChildren<Text> ().text = items[invIndex].amount.ToString ();
+					if(items[invIndex].amount > 1)
+						storeItem[index].GetComponentInChildren<Text> ().text = items[invIndex].amount.ToString();
+					else if(items[invIndex].amount == 1)
+						storeItem[index].GetComponentInChildren<Text> ().text = "";
 					return;
 				}
 			}
+		}
+		if (item.itemType == ItemType.Special) {
+			amountOfItem = specialItem.Length;
+			for(int index = 0; index < amountOfItem; index++) {
+				if(specialItem[index].sprite == null||
+				   specialItem[index].sprite == itemSprite) {
+					if(specialItem[index].sprite == null) {
+						specialItem[index].GetComponent<SpecialItem> ().setSpecialItem (item, itemSprite);
+					}
+					if(specialItem[index].GetComponent<SpecialItem> ().setItemUsable(items[invIndex].amount))
+						break;
+					return;
+				}
+			}
+			removeFromItemInventory(ItemType.Special);
+			addToItemInventory(item.id);
 		}
 	}
 }

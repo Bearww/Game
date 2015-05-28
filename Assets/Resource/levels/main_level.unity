@@ -87,37 +87,12 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &15757277
-GameObject:
-  m_PrefabParentObject: {fileID: 191394, guid: c995dd3e656741144aea5daaa2ba4a82, type: 2}
-  m_PrefabInternal: {fileID: 860395930}
---- !u!111 &15757280
-Animation:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 15757277}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 73eeba9f3d3bae94d97e05a8a122055d, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 73eeba9f3d3bae94d97e05a8a122055d, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &200899660
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11421810, guid: ff8049dab58e67147a62066a103e8aae,
     type: 2}
   m_PrefabInternal: {fileID: 449732973}
   m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
---- !u!114 &260209977
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11463466, guid: ff8049dab58e67147a62066a103e8aae,
-    type: 2}
-  m_PrefabInternal: {fileID: 449732973}
-  m_Script: {fileID: 11500000, guid: 80eb091762a056246a89739eafdaf467, type: 3}
 --- !u!1 &263337770
 GameObject:
   m_PrefabParentObject: {fileID: 139548, guid: ff8049dab58e67147a62066a103e8aae, type: 2}
@@ -162,15 +137,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiles:
-  - tileName: grassTile
+  - tileName: VillageRoadTile
+    tileColor: {r: .784313738, g: .784313738, b: 0, a: 1}
+    tileTransform: {fileID: 433344, guid: dce88604d803d74418ec5964470e056b, type: 2}
+    isMutiple: 0
+  - tileName: ForestRoadTile
     tileColor: {r: 1, g: 0, b: 0, a: 1}
-    tileTransform: {fileID: 491698, guid: 18ef22e57fe400d4bb8e019734a85f91, type: 2}
-  - tileName: buildingTile
+    tileTransform: {fileID: 419666, guid: f0b42dfe54b971f4b9b6a225e06a4074, type: 2}
+    isMutiple: 0
+  - tileName: CityRoadTile
+    tileColor: {r: .784313738, g: .784313738, b: .784313738, a: 1}
+    tileTransform: {fileID: 467354, guid: 509a661e545178b4eaafacf5663db601, type: 2}
+    isMutiple: 0
+  - tileName: NeighborhoodRoadTile
+    tileColor: {r: .588235319, g: 0, b: 0, a: 1}
+    tileTransform: {fileID: 428328, guid: 85221c1826f9ed549a620f71b722cb0d, type: 2}
+    isMutiple: 0
+  - tileName: UnderbrusTile
+    tileColor: {r: 0, g: .784313738, b: 0, a: 1}
+    tileTransform: {fileID: 477312, guid: 7690774c88ca8e142896635d8630ba48, type: 2}
+    isMutiple: 0
+  - tileName: TreeTile
+    tileColor: {r: 0, g: 0, b: .784313738, a: 1}
+    tileTransform: {fileID: 478178, guid: e444a61f9d5263940b187c0c86d69109, type: 2}
+    isMutiple: 0
+  - tileName: LightTile
+    tileColor: {r: .784313738, g: 0, b: 0, a: 1}
+    tileTransform: {fileID: 432554, guid: bd87739018c2dec46b8824453ac4d306, type: 2}
+    isMutiple: 0
+  - tileName: HouseTile
+    tileColor: {r: .784313738, g: 0, b: .784313738, a: 1}
+    tileTransform: {fileID: 430730, guid: 6390699c7e70af64086a85d493f48321, type: 2}
+    isMutiple: 0
+  - tileName: GrassTile
     tileColor: {r: 0, g: 0, b: 1, a: 1}
+    tileTransform: {fileID: 491698, guid: 18ef22e57fe400d4bb8e019734a85f91, type: 2}
+    isMutiple: 0
+  - tileName: TreeTile
+    tileColor: {r: 0, g: 1, b: 1, a: 1}
     tileTransform: {fileID: 425004, guid: 8ba1ce0aef512a841b04be3e9960d99b, type: 2}
-  - tileName: treeTile
-    tileColor: {r: .749019623, g: .749019623, b: 0, a: 1}
-    tileTransform: {fileID: 425004, guid: 8ba1ce0aef512a841b04be3e9960d99b, type: 2}
+    isMutiple: 0
+  - tileName: WindmillTile
+    tileColor: {r: .588235319, g: .588235319, b: .588235319, a: 1}
+    tileTransform: {fileID: 401070, guid: 2b7be60bce7a5114fa2177c2b8f9085a, type: 2}
+    isMutiple: 1
+  - tileName: FountainTile
+    tileColor: {r: 0, g: .784313738, b: .784313738, a: 1}
+    tileTransform: {fileID: 405706, guid: c2be81ca2479dba489fa6c83d99f5519, type: 2}
+    isMutiple: 1
   spawnEnemyColour: {r: 0, g: 1, b: 0, a: 1}
   spawnItemColour: {r: 1, g: 1, b: 0, a: 1}
   spawnPathColour: {r: 1, g: 0, b: 1, a: 1}
@@ -227,26 +241,6 @@ Prefab:
       propertyPath: itemManager
       value: 
       objectReference: {fileID: 621640166}
-    - target: {fileID: 11416322, guid: ff8049dab58e67147a62066a103e8aae, type: 2}
-      propertyPath: delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 260209977}
-    - target: {fileID: 11416322, guid: ff8049dab58e67147a62066a103e8aae, type: 2}
-      propertyPath: delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: useItem
-      objectReference: {fileID: 0}
-    - target: {fileID: 11416322, guid: ff8049dab58e67147a62066a103e8aae, type: 2}
-      propertyPath: delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11416322, guid: ff8049dab58e67147a62066a103e8aae, type: 2}
-      propertyPath: delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 11449674, guid: ff8049dab58e67147a62066a103e8aae, type: 2}
-      propertyPath: delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: useItem
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ff8049dab58e67147a62066a103e8aae, type: 2}
   m_IsPrefabParent: 0
@@ -324,6 +318,14 @@ MonoBehaviour:
     itemSprite: {fileID: 21300016, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
   - itemTransform: {fileID: 440618, guid: da49898b4f87b4345905d1e3fb1cbe89, type: 2}
     itemSprite: {fileID: 21300018, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  - itemTransform: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
+    itemSprite: {fileID: 21300026, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  - itemTransform: {fileID: 424640, guid: a41ded33a3a0a014599d930c757c78ec, type: 2}
+    itemSprite: {fileID: 21300024, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  - itemTransform: {fileID: 490960, guid: b95ff21f0477f444fa4fab63756b1e8e, type: 2}
+    itemSprite: {fileID: 21300022, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  - itemTransform: {fileID: 427200, guid: 9771d2a5d44f722449796b63241f88a0, type: 2}
+    itemSprite: {fileID: 21300020, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
 --- !u!1 &762729999
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,7 +407,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409210, guid: c995dd3e656741144aea5daaa2ba4a82, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 11405512, guid: c995dd3e656741144aea5daaa2ba4a82, type: 2}
       propertyPath: gameManager
@@ -423,63 +425,8 @@ Prefab:
       propertyPath: gameObjs.Array.data[2]
       value: 
       objectReference: {fileID: 762729999}
-    - target: {fileID: 163194, guid: c995dd3e656741144aea5daaa2ba4a82, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 21228100, guid: c995dd3e656741144aea5daaa2ba4a82, type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: bf80f1eb9d61bed4aa1b6896db88e017,
-        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c995dd3e656741144aea5daaa2ba4a82, type: 2}
-  m_IsPrefabParent: 0
---- !u!1001 &1316006970
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 425956, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 168532, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 226f71714742f5c48a6ac533118d63f8, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &1418542270
 MonoBehaviour:
@@ -498,7 +445,7 @@ GameObject:
   - 114: {fileID: 1444729988}
   m_Layer: 0
   m_Name: spawnEnemy
-  m_TagString: Untagged
+  m_TagString: SpawnEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

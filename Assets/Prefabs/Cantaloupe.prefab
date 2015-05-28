@@ -26,6 +26,7 @@ GameObject:
   - 4: {fileID: 490960}
   - 114: {fileID: 11475242}
   - 50: {fileID: 5025506}
+  - 114: {fileID: 11450036}
   m_Layer: 0
   m_Name: Cantaloupe
   m_TagString: Item
@@ -73,6 +74,21 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
+--- !u!114 &11450036
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 962fb78750d7631429d224880680430b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 1
+  itemPower: 0
+  itemDuration: 100
+  isDebuff: 0
 --- !u!114 &11475242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,10 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f348ac742c20cc04a80d36c7f490e2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 3
+  id: 17
   itemName: Cantaloupe
   itemType: 1
-  itemSprite: {fileID: 21300022, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
 --- !u!212 &21244096
 SpriteRenderer:
   m_ObjectHideFlags: 1

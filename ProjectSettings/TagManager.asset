@@ -9,6 +9,8 @@ TagManager:
   - Tile
   - EnemyManager
   - Buff
+  - SpawnEnemy
+  - Debuff
   layers:
   - Default
   - TransparentFX

@@ -44,8 +44,9 @@ public class GameManager : MonoBehaviour {
 		gameStage = 0;
 		gameScore = stageScore = basicScore = 0;
 		gameTime = 3;
-		addEnemy ();
 		player.setActive (false);
+		player.GetComponent<Rigidbody2D> ().isKinematic = true;
+		addEnemy ();
 		InvokeRepeating("countDown", 0.1f, 1f);
 	}
 
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour {
 				gameMode = GameMode.Normal;
 				gameTime = minuteTimeLimits * 60;
 				player.setActive(true);
+				player.GetComponent<Rigidbody2D> ().isKinematic = false;
 			}
 		}
 		if (gameMode == GameMode.Normal) {

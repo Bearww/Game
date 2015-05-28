@@ -16,11 +16,7 @@ public class SpawnItems : MonoBehaviour {
 	public List<Transform> stageProperty;
 
 	public SpawnEnemies enemies;
-
-	void Start () {
-		Debug.Log ("[SpawnItem]SpawnPoints " + spawnPoints.Count);
-	}
-
+	
 	public void addItem(Item item) {
 		spawnAmount.Add (0);
 		spawnItem.Add (itemManager.getItem (item));
@@ -73,6 +69,7 @@ public class SpawnItems : MonoBehaviour {
 	}
 
 	public void startSpawnItems() {
+		Debug.Log ("[SpawnItem]SpawnPoints " + spawnPoints.Count);
 		for (int index = 0; index < spawnPoints.Count; index++) {
 			//Debug.Log ("[SpawnEnemy]Spawn " + e);
 			Transform item = getSpawnItem();

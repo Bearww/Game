@@ -12,9 +12,9 @@ public class Enemy : Entity {
 	private Vector3 lastPos;
 	
 	private int currentStep = 0;
-	
-	private bool isActive = true;
+
 	private bool isEscape = false;
+	public bool isActive = true;
 
 	private int stage;
 
@@ -28,8 +28,8 @@ public class Enemy : Entity {
 	}
 
 	void Update () {
-		if (isActive && !isEscape) {
-			if(enemyPath.Count > 0) {
+		if (isActive) {
+			if(!isEscape && enemyPath.Count > 0) {
 				if (enemyPath [currentStep].dir == Direction.Up) {
 					GetComponent<Transform> ().position += Vector3.up * speed * Time.deltaTime;
 				}
@@ -76,18 +76,7 @@ public class Enemy : Entity {
 	public int getStage() {
 		return stage;
 	}
-
-	public void setActive(Direction dir) {
-		if (dir == Direction.Up)
-			isActive =  !(enemyPath [currentStep].dir == Direction.Down);
-		if (dir == Direction.Down)
-			isActive =  !(enemyPath [currentStep].dir == Direction.Up);
-		if (dir == Direction.Left)
-			isActive =  !(enemyPath [currentStep].dir == Direction.Right);
-		if (dir == Direction.Right)
-			isActive =  !(enemyPath [currentStep].dir == Direction.Left);
-	}
-
+	
 	public void setActive(bool active) {
 		isActive = active;
 	}

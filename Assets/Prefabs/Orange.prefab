@@ -85,10 +85,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80eb091762a056246a89739eafdaf467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemEffect: 1
+  itemPower: 0
   itemDuration: 10
-  itemEffect: 0
-  isUsable: 0
-  bufImage: {fileID: 0}
+  isDebuff: 0
   cd: 10
   price: 10
   description: Stop time

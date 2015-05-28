@@ -26,6 +26,7 @@ GameObject:
   - 4: {fileID: 424640}
   - 114: {fileID: 11452628}
   - 50: {fileID: 5034634}
+  - 114: {fileID: 11473338}
   m_Layer: 0
   m_Name: Cherry
   m_TagString: Item
@@ -84,10 +85,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f348ac742c20cc04a80d36c7f490e2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4
+  id: 16
   itemName: Cherry
-  itemType: 2
-  itemSprite: {fileID: 21300024, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
+  itemType: 3
+--- !u!114 &11473338
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 133156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a505e5736a82147a4e82080c695d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 0
+  itemPower: 5
+  itemDuration: 5
+  collectNumber: 1
 --- !u!212 &21219896
 SpriteRenderer:
   m_ObjectHideFlags: 1

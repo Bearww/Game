@@ -26,6 +26,7 @@ GameObject:
   - 4: {fileID: 425956}
   - 114: {fileID: 11423686}
   - 50: {fileID: 5067354}
+  - 114: {fileID: 11407766}
   m_Layer: 0
   m_Name: Bell
   m_TagString: Item
@@ -73,6 +74,22 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
+--- !u!114 &11407766
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a505e5736a82147a4e82080c695d57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEffect: 1
+  itemPower: 10
+  itemDuration: 10
+  isDebuff: 0
+  collectNumber: 5
 --- !u!114 &11423686
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,10 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f348ac742c20cc04a80d36c7f490e2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 5
+  id: 15
   itemName: Bell
   itemType: 3
-  itemSprite: {fileID: 21300026, guid: d818a726972b90c4c8e1c0adafb243c7, type: 3}
 --- !u!212 &21200012
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -34,6 +34,7 @@ public class Level : MonoBehaviour {
 		loadLevel ();
 		loadTopTiles ();
 		loadEnemyPath ();
+		spawnEnemies.startSpawnEnemies ();
 	}
 
 	void Update () {
@@ -54,22 +55,6 @@ public class Level : MonoBehaviour {
 						Instantiate(t.tileTransform, new Vector3(x, y), Quaternion.identity);
 					}
 				}
-				if(tileColours[x + y * levelWidth] == spawnPointColour) {
-					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
-					Vector2 pos = new Vector2(x, y);
-					player.transform.position = pos;
-				}
-				if(tileColours[x + y * levelWidth] == spawnEnemyColour) {
-					spawnEnemies.addSpawnPoint(new Vector3(x, y));
-					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
-				}
-				if(tileColours[x + y * levelWidth] == spawnPathColour) {
-					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
-				}
-				if(tileColours[x + y * levelWidth] == spawnItemColour) {
-					spawnItems.addSpawnPoint(new Vector3(x, y));
-					Instantiate(tiles[0].tileTransform, new Vector3(x, y), Quaternion.identity);
-				}
 			}
 		}
 	}
@@ -86,8 +71,23 @@ public class Level : MonoBehaviour {
 			for(int x = 0; x < levelWidth; x++) {
 				foreach(Tile t in tiles) {
 					if(topTileColours[x + y * levelWidth] == t.tileColor) {
-						Instantiate(t.tileTransform, new Vector3(x, y), Quaternion.identity);
+						if(t.isMutiple) {
+							Instantiate(t.tileTransform, new Vector3(x + 0.5f, y + 0.5f), Quaternion.identity);
+						}
+						else {
+							Instantiate(t.tileTransform, new Vector3(x, y), Quaternion.identity);
+						}
 					}
+				}
+				if(topTileColours[x + y * levelWidth] == spawnPointColour) {
+					Vector2 pos = new Vector2(x, y);
+					player.transform.position = pos;
+				}
+				if(topTileColours[x + y * levelWidth] == spawnEnemyColour) {
+					spawnEnemies.addSpawnPoint(new Vector3(x, y));
+				}
+				if(topTileColours[x + y * levelWidth] == spawnItemColour) {
+					spawnItems.addSpawnPoint(new Vector3(x, y));
 				}
 			}
 		}
@@ -119,19 +119,19 @@ public class Level : MonoBehaviour {
 			Vector3 c = st.Peek ();
 			int cx = (int) c.x, cy = (int) c.y;
 
-			if(cy < levelHeight - 1 && tileColours[(cy + 1) * levelWidth + cx] == spawnPathColour
+			if(cy < levelHeight - 1 && topTileColours[(cy + 1) * levelWidth + cx] == spawnPathColour
 			   && !isVisited(c, Direction.Up, pt)) {
 				addPoint (c, Direction.Up, st, pt, ep);
 			}
-			else if(cy > 0 && tileColours[(cy - 1) * levelWidth +cx] == spawnPathColour
+			else if(cy > 0 && topTileColours[(cy - 1) * levelWidth +cx] == spawnPathColour
 			   && !isVisited(c, Direction.Down, pt)) {
 				addPoint (c, Direction.Down, st, pt, ep);
 			}
-			else if(cx > 0 && tileColours[cy * levelWidth + cx - 1] == spawnPathColour
+			else if(cx > 0 && topTileColours[cy * levelWidth + cx - 1] == spawnPathColour
 			        && !isVisited(c, Direction.Left, pt)) {
 				addPoint (c, Direction.Left, st, pt, ep);
 			}
-			else if(cx < levelWidth - 1 && tileColours[cy * levelWidth + cx + 1] == spawnPathColour
+			else if(cx < levelWidth - 1 && topTileColours[cy * levelWidth + cx + 1] == spawnPathColour
 			        && !isVisited(c, Direction.Right, pt)) {
 				addPoint (c, Direction.Right, st, pt, ep);
 			}
@@ -209,4 +209,5 @@ public class Tile {
 	public string tileName;
 	public Color tileColor;
 	public Transform tileTransform;
+	public bool isMutiple = false;
 }
