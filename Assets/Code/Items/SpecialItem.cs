@@ -72,15 +72,16 @@ public class SpecialItem : BuffItem {
 
 	public bool setItemUsable(int amount) {
 		isUsable = (amount == collectNumber);
-		if(isUsable)
-			GetComponent<Image> ().color = new Color(1, 1, 1, 1);
+		if (isUsable)
+			GetComponent<Image> ().color = new Color (1, 1, 1, 1);
 		else
-			GetComponent<Image> ().color = new Color(0.5f, 0.5f, 0.5f, 1);
+			GetComponent<Image> ().color = new Color (0.5f, 0.5f, 0.5f, 1);
 
-		if(amount > 1)
-			GetComponentInChildren<Text> ().text = amount.ToString();
-		else if(amount == 1)
+		if (isUsable)
 			GetComponentInChildren<Text> ().text = "";
+		else
+			GetComponentInChildren<Text> ().text = string.Format ("{0}/{1}", amount, collectNumber);
+
 		return amount > collectNumber;
 	}
 }

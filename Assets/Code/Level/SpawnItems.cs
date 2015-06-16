@@ -18,6 +18,10 @@ public class SpawnItems : MonoBehaviour {
 	public SpawnEnemies enemies;
 	
 	public void addItem(Item item) {
+		if (spawnAmount.Count < stageProperty.Count) {
+			for(int index = 0; index < stageProperty.Count; index++)
+				spawnAmount.Add(0);
+		}
 		spawnAmount.Add (0);
 		spawnItem.Add (itemManager.getItem (item));
 	}
@@ -29,6 +33,10 @@ public class SpawnItems : MonoBehaviour {
 	}
 
 	public int findSpawnItem(Item item) {
+		for (int index = 0; index < stageProperty.Count; index++) {
+			if(stageProperty[index].GetComponent<Item> ().id == item.id)
+				return index;
+		}
 		for (int index = 0; index < spawnItem.Count; index++) {
 			if(spawnItem[index].GetComponent<Item> ().id == item.id)
 				return index;
@@ -56,8 +64,9 @@ public class SpawnItems : MonoBehaviour {
 		spawnItem.RemoveAt (index);
 
 		for (index = 0; index < spawnPoints.Count; index++) {
-			if(spawnPoints[index].spawnTransform.GetComponent<Item> ().id == item.id) {
-				respawnItem(index);
+			if(spawnPoints[index].spawnTransform != null) {
+				if(spawnPoints[index].spawnTransform.GetComponent<Item> ().id == item.id)
+					respawnItem(index);
 			}
 		}
 	}
@@ -79,7 +88,6 @@ public class SpawnItems : MonoBehaviour {
 
 	void changeItemAmount(int index) {
 		int i = findSpawnItem (spawnPoints [index].spawnTransform.GetComponent<Item> ());
-		
 		if (i < 0) {
 			Debug.Log ("[SpanwItem]Invalid item");
 		}
@@ -89,30 +97,36 @@ public class SpawnItems : MonoBehaviour {
 	}
 
 	Transform getSpawnItem() {
-		int items = stageProperty.Count + spawnAmount.Count;
+		int items = spawnAmount.Count;
 		for (int i = stageProperty.Count; i < spawnAmount.Count; i++) {
 			if(spawnAmount[i] == 0)
 				items++;
 		}
 
-		int r = (int)(Random.Range (0f, 0.99f) * items);
+		int r = Random.Range (0, items - 1);
 		if (r < stageProperty.Count) {
 			spawnAmount[r]++;
 			return stageProperty[r];
 		}
 
 		r -= stageProperty.Count;
-		if (r < spawnAmount.Count) {
+		if (r < spawnItem.Count) {
 			spawnAmount[r]++;
 			return spawnItem[r];
 		}
 
-		r -= spawnAmount.Count;
+		r -= spawnItem.Count;
 		for (int i = 0, j = 0; i < spawnAmount.Count; i++) {
 			if(spawnAmount[i] == 0) {
 				if(r == j) {
-					spawnAmount[j]++;
-					return spawnItem[i];
+					if(i < stageProperty.Count) {
+						spawnAmount[i]++;
+						return stageProperty[i];
+					}
+					else {
+						spawnAmount[i]++;
+						return spawnItem[i - stageProperty.Count];
+					}
 				}
 				else {
 					j++;

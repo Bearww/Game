@@ -24,20 +24,34 @@ public class PlayerItemManager : MonoBehaviour {
 	
 	}
 
-	public void addToItemInventory(int itemId) {
+	public void addToInventory(int itemId) {
 		int itemIndex = findInItems (itemId);
 		if (itemIndex < 0) {
 			Debug.Log ("[PlayerItemManager]Invalid item loc");
 		}
 		else {
 			Debug.Log (string.Format("[PlayerItemManager]Add itemId:{0}", itemId));
-			Inventory inv = new Inventory(itemManager.items[itemIndex].itemTransform.GetComponent<Item> (), 1);
-			items.Add(inv);
-			updateItemUI(itemIndex, items.Count - 1);
+
+			int invIndex = findInInventory(itemId);
+			if(invIndex < 0) {
+				Inventory inv = new Inventory(itemManager.items[itemIndex].itemTransform.GetComponent<Item> (), 1);
+				items.Add(inv);
+				invIndex = items.Count - 1;
+			}
+			else {
+				if(items[invIndex].item.itemType == ItemType.Role) {
+					Inventory inv = new Inventory(itemManager.items[itemIndex].itemTransform.GetComponent<Item> (), 1);
+					items.Add(inv);
+					invIndex = items.Count - 1;
+				}
+				else
+					items[invIndex].amount += 1;
+			}
+			updateItemUI(itemIndex, invIndex);
 		}
 	}
 
-	public void addToItemInventory(int itemId, int amount) {
+	public void addToInventory(int itemId, int amount) {
 		int itemIndex = findInItems (itemId);
 		if (itemIndex < 0) {
 			Debug.Log ("[PlayerItemManager | Add]Invalid item loc");
@@ -153,7 +167,7 @@ public class PlayerItemManager : MonoBehaviour {
 
 			for(; index < amountOfItem - 1; index++) {
 				roleItem[index].sprite = roleItem[index + 1].sprite;
-				roleItem[index].color = new Color(1, 1, 1, 1);
+				roleItem[index].color = roleItem[index + 1].color;
 			}
 			roleItem[amountOfItem - 1].sprite = null;
 			roleItem[amountOfItem - 1].color = new Color(1, 1, 1, 0);
@@ -206,9 +220,11 @@ public class PlayerItemManager : MonoBehaviour {
 		if (item.itemType == ItemType.Buff) {
 			if(item.GetComponent<BuffItem> ().isDebuff) {
 				debufItem.GetComponent<BuffItem> ().setItem (item, itemSprite);
+				removeFromItemInventory(item.id);
 			}
 			else {
 				bufItem.GetComponent<BuffItem> ().setItem (item, itemSprite);
+				removeFromItemInventory(item.id);
 			}
 		}
 		if (item.itemType == ItemType.Store) {
@@ -243,7 +259,7 @@ public class PlayerItemManager : MonoBehaviour {
 				}
 			}
 			removeFromItemInventory(ItemType.Special);
-			addToItemInventory(item.id);
+			addToInventory(item.id);
 		}
 	}
 }

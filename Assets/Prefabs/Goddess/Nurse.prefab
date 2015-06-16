@@ -86,7 +86,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: .779999971
+  m_Radius: .5
 --- !u!114 &11453720
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -99,10 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  isGay: 0
   id: 4
   enemyName: "\u5C0F\u8B77\u58EB"
   enemyItem: {fileID: 11477814, guid: c25ad9ef27498494898922b3f89c7508, type: 2}
   enemyPath: []
+  chasePath: []
 --- !u!212 &21204274
 SpriteRenderer:
   m_ObjectHideFlags: 1

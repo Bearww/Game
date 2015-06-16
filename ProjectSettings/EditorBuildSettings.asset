@@ -5,7 +5,17 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Auth.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level.unity
+  - enabled: 1
+    path: Assets/Resources/Levels/load.unity
+  - enabled: 1
+    path: Assets/Resources/Levels/hall.unity
+  - enabled: 1
+    path: Assets/Resources/Levels/main_level.unity
+  - enabled: 1
+    path: Assets/Resources/Levels/rule.unity
+  - enabled: 1
+    path: Assets/Resources/Levels/atlas.unity

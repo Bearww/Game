@@ -59,6 +59,12 @@ public class SpawnEnemies : MonoBehaviour {
 		setEnemyRatio ();
 	}
 
+	public void changeSpecialEnemy(float speed) {
+		for (int index = 0; index < spawnSpecial.Count; index++) {
+			spawnSpecial[index].enemy.GetComponent<Enemy> ().speed = speed;
+		}
+	}
+
 	public int findSpawnEnemy(Enemy enemy) {
 		for (int index = 0; index < spawnSpecial.Count; index++) {
 			if(spawnSpecial[index].enemy.GetComponent<Enemy> ().id == enemy.id)
@@ -101,7 +107,8 @@ public class SpawnEnemies : MonoBehaviour {
 		if (index < spawnSpecial.Count) {
 			return spawnSpecial[index].enemy.GetComponent<Enemy> ().enemyItem;
 		}
-		return spawnEnemy [index - spawnSpecial.Count].enemy.GetComponent<Enemy> ().enemyItem;
+		index -= spawnSpecial.Count;
+		return spawnEnemy [index].enemy.GetComponent<Enemy> ().enemyItem;
 	}
 
 	public int getSpawnSize() {
@@ -116,7 +123,7 @@ public class SpawnEnemies : MonoBehaviour {
 
 	public void startEnemies() {
 		for (int index = 0; index < spawnPoints.Count; index++) {
-			if(spawnPoints[index].spawnTransform.gameObject != null)
+			if(spawnPoints[index].spawnTransform != null)
 				spawnPoints[index].spawnTransform.GetComponent<Enemy> ().setActive(true);
 		}
 	}
@@ -133,7 +140,7 @@ public class SpawnEnemies : MonoBehaviour {
 
 	public void stopEnemies() {
 		for (int index = 0; index < spawnPoints.Count; index++) {
-			if(spawnPoints[index].spawnTransform.gameObject != null)
+			if(spawnPoints[index].spawnTransform != null)
 				spawnPoints[index].spawnTransform.GetComponent<Enemy> ().setActive(false);
 		}
 	}
@@ -168,11 +175,14 @@ public class SpawnEnemies : MonoBehaviour {
 			setEnemyRatio();
 			i = spawnSpecial.Count;
 		}
+
 		spawnAmount [i] += 1;
 
-		if (i < spawnSpecial.Count) {
+		if (i < spawnSpecial.Count)
 			return spawnSpecial [i];
-		}
+
+		i -= spawnSpecial.Count;
+
 		return spawnEnemy [i];
 	}
 
@@ -187,9 +197,9 @@ public class SpawnEnemies : MonoBehaviour {
 		}
 		else {
 			if(--spawnAmount[i] == 0) {
-				if(spawnEnemy[i].getStage() != spawnEnemy[spawnEnemy.Count - 1].getStage()) {
-					removeEnemy(i);
-				}
+				//if(spawnEnemy[i].getStage() != spawnEnemy[spawnEnemy.Count - 1].getStage()) {
+				removeEnemy(i);
+				//}
 			}
 		}
 	}

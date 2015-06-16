@@ -14,7 +14,7 @@ public class Level : MonoBehaviour {
 
 	private Color[] tileColours;
 	private Color[] topTileColours;
-	
+
 	public Color spawnEnemyColour;
 	public Color spawnItemColour;
 	public Color spawnPathColour;
@@ -27,6 +27,8 @@ public class Level : MonoBehaviour {
 	public SpawnEnemies spawnEnemies;
 
 	public Entity player;
+
+	public NodeManager nodeManager;
 
 	void Start () {
 		levelWidth = levelTexture.width;
@@ -66,16 +68,23 @@ public class Level : MonoBehaviour {
 		Debug.Log ("[Level]Load top tiles");
 		topTileColours = new Color[levelWidth * levelHeight];
 		topTileColours = topTileTexture.GetPixels ();
+		nodeManager.CreateNodes (levelWidth, levelHeight);
 
 		for (int y = 0; y < levelHeight; y++) {
 			for(int x = 0; x < levelWidth; x++) {
+				int loc = x + y * levelWidth;
 				foreach(Tile t in tiles) {
-					if(topTileColours[x + y * levelWidth] == t.tileColor) {
+					if(topTileColours[loc] == t.tileColor) {
 						if(t.isMutiple) {
 							Instantiate(t.tileTransform, new Vector3(x + 0.5f, y + 0.5f), Quaternion.identity);
+							nodeManager.SetObstacel(x, y);
+							nodeManager.SetObstacel(x, y + 1);
+							nodeManager.SetObstacel(x + 1, y);
+							nodeManager.SetObstacel(x + 1, y + 1);
 						}
 						else {
 							Instantiate(t.tileTransform, new Vector3(x, y), Quaternion.identity);
+							nodeManager.SetObstacel(x, y);
 						}
 					}
 				}

@@ -6,6 +6,7 @@ public class Testing : MonoBehaviour {
 	public GameManager game;
 	public SpawnEnemies enemy;
 	public SpawnItems item;
+	public Player player;
 
 	// Add score to player
 	public bool addScore = false;
@@ -24,6 +25,19 @@ public class Testing : MonoBehaviour {
 
 	// Destroy all item
 	public bool destroyAllItem = false;
+
+	// Add item to player
+	public int itemId = 0;
+	public bool addItemToPlayer = false;
+
+	// Bar test
+	public Bar shooterBar;
+	public Bar stageScoreBar;
+	public Bar basicScoreBar;
+	public float shooter;
+	public float stageScore;
+	public float basicScore;
+	public bool addBar = false;
 
 	void Start () {
 	
@@ -51,6 +65,16 @@ public class Testing : MonoBehaviour {
 			for(int i = 0; i < item.spawnPoints.Count; i++)
 				item.respawnItem(i);
 			destroyAllItem = false;
+		}
+		if (addItemToPlayer) {
+			player.pItemManager.addToInventory(itemId);
+			addItemToPlayer = false;
+		}
+		if (addBar) {
+			shooterBar.setBar(shooter);
+			stageScoreBar.setBar(stageScore);
+			basicScoreBar.setBar(basicScore);
+			addBar = false;
 		}
 	}
 }

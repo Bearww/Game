@@ -779,8 +779,8 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_GenerateMotionCurves: 0
   m_Events:
-  - time: .200000003
-    functionName: 
+  - time: 1.5
+    functionName: backToGame
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
